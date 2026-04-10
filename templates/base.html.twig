@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Nasrulex - Intelligence Juridique & Fiscale{% endblock %}</title>
+    
+    <!-- Meta SEO Premium -->
+    <meta name="description" content="Plateforme intelligente de textes législatifs, réglementaires et doctrine fiscale - Accès instantané à la connaissance juridique">
+    <meta name="keywords" content="droit sénégal, législation, fiscalité, juridique, intelligence artificielle, veille légale">
+    
+    <!-- Favicon & App Icons -->
+    <link rel="icon" type="image/png" href="{{asset('assets/img/Nasurlex-logo.png')}}">
+    <link rel="apple-touch-icon" href="{{asset('assets/img/Nasurlex-logo.png')}}">
+    
+    <!-- Tailwind CSS avec Config Avancée -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts Premium -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom Tailwind Config avec Design System -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                        },
+                        accent: {
+                            400: '#fb7185',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                        },
+                        dark: {
+                            900: '#0f172a',
+                            800: '#1e293b',
+                            700: '#334155',
+                        }
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                        'jakarta': ['Plus Jakarta Sans', 'sans-serif']
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'slide-in': 'slideIn 0.5s ease-out',
+                        'fade-in': 'fadeIn 0.8s ease-out',
+                        'bounce-slow': 'bounce 3s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' }
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 20px rgba(20, 184, 166, 0.3)' },
+                            '100%': { boxShadow: '0 0 30px rgba(20, 184, 166, 0.6)' }
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateX(-100%)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' }
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        }
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Chatra -->
+    <script>
+        (function(d, w, c) {
+            w.ChatraID = 'MqT9xme48HoAnWiKx';
+            var s = d.createElement('script');
+            w[c] = w[c] || function() {
+                (w[c].q = w[c].q || []).push(arguments);
+            };
+            s.async = true;
+            s.src = 'https://call.chatra.io/chatra.js';
+            if (d.head) d.head.appendChild(s);
+        })(document, window, 'Chatra');
+    </script>
+    
+    <style>
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #0ea5e9 0%, #10b981 50%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hover-lift {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .gradient-border {
+            position: relative;
+            background: linear-gradient(45deg, #0ea5e9, #10b981, #8b5cf6);
+            padding: 2px;
+            border-radius: 12px;
+        }
+        
+        .gradient-border > div {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+
+        /* Styles pour les inputs sur fond sombre */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus {
+            -webkit-text-fill-color: white;
+            -webkit-box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0.1) inset;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { border-color: rgba(239, 68, 68, 0.5); }
+            50% { border-color: rgba(239, 68, 68, 1); }
+        }
+    </style>
+    
+    {% block stylesheets %}{% endblock %}
+</head>
+<body class="font-jakarta bg-gradient-to-br from-dark-900 via-primary-900 to-dark-800 min-h-screen text-white">
+    <!-- Preloader Animé -->
+    <div id="preloader" class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-dark-900 via-primary-900 to-dark-800">
+        <div class="text-center">
+            <div class="relative">
+                <div class="w-20 h-20 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+                <div class="absolute inset-0 w-20 h-20 border-4 border-accent-500 border-b-transparent rounded-full animate-spin mx-auto" style="animation-direction: reverse;"></div>
+            </div>
+            <p class="mt-6 text-white font-medium text-lg animate-pulse">Nasrulex</p>
+        </div>
+    </div>
+
+    <!-- Background Animations -->
+    <div class="fixed inset-0 pointer-events-none">
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500 rounded-full opacity-20 blur-3xl animate-float"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent-500 rounded-full opacity-30 blur-3xl animate-float" style="animation-delay: 2s;"></div>
+        <div class="absolute top-1/2 left-1/2 w-64 h-64 bg-primary-400 rounded-full opacity-10 blur-3xl animate-float" style="animation-delay: 4s;"></div>
+    </div>
+
+    <!-- Header Animé -->
+    <header class="fixed top-0 left-0 right-0 z-40 glass-effect border-b border-white/20">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo avec Animation -->
+                <a href="/" class="flex items-center group">
+                    <div class="relative">
+                        <img src="{{asset('assets/img/Nasurlex-logo.png')}}" alt="Nasrulex" class="h-10 w-10 transition-transform group-hover:scale-110">
+                        <div class="absolute inset-0 bg-primary-500 rounded-full opacity-0 group-hover:opacity-20 animate-pulse"></div>
+                    </div>
+                    <span class="ml-3 text-xl font-black text-white group-hover:text-primary-300 transition-colors">
+                        
+                    </span>
+                </a>
+                
+                <!-- Navigation Desktop -->
+                <nav class="hidden lg:flex items-center space-x-8">
+                    <a href="/" class="text-gray-300 hover:text-primary-300 font-medium transition-colors relative group">
+                        Accueil
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-300 transition-all group-hover:w-full"></span>
+                    </a>
+                    
+                    {% for cat in categories %}
+                    <div class="relative group">
+                        <button class="text-gray-300 hover:text-primary-300 font-medium transition-colors flex items-center">
+                            {{ cat.libelle }}
+                            <i class="fas fa-chevron-down ml-1 text-xs transition-transform group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute left-0 mt-4 w-56 glass-effect rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform -translate-y-2 group-hover:translate-y-0">
+                            <div class="py-2">
+                                {% for sousCat in cat.sousCategorie %}
+                                <a href="#" class="block px-4 py-3 text-white hover:bg-primary-500/20 hover:text-primary-300 transition-all duration-200 rounded-lg mx-2">
+                                    {{ sousCat.libelle }}
+                                </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </nav>
+                
+                <!-- User Actions -->
+                <div class="flex items-center space-x-4">
+                    {% if app.user %}
+                        {% if app.user.role == "ROLE_USER" %}
+                            <a href="{{path('profil')}}" class="hidden md:flex items-center px-4 py-2 text-gray-300 hover:text-primary-300 font-medium transition-colors group">
+                                <i class="fas fa-user-circle mr-2 group-hover:scale-110 transition-transform"></i>
+                                Mon Compte
+                            </a>
+                        {% endif %}
+                        {% if app.user.role == "ROLE_ADMIN" %}
+                            <a href="{{path('dashbord')}}" class="hidden md:flex items-center px-4 py-2 text-gray-300 hover:text-primary-300 font-medium transition-colors group">
+                                <i class="fas fa-tachometer-alt mr-2 group-hover:scale-110 transition-transform"></i>
+                                Dashboard
+                            </a>
+                        {% endif %}
+                        <a href="{{path('logout')}}" class="flex items-center px-4 py-2 text-gray-300 hover:text-accent-300 font-medium transition-colors group">
+                            <i class="fas fa-sign-out-alt mr-2 group-hover:scale-110 transition-transform"></i>
+                            <span class="hidden md:inline">Déconnexion</span>
+                        </a>
+                    {% else %}
+                    <a href="{{path('tarif')}}" class="hidden md:flex items-center px-4 py-2 text-gray-300 hover:text-primary-300 font-medium transition-colors group">
+                            <i class="fas fa-sign-in-alt mr-2 group-hover:scale-110 transition-transform"></i>
+                            Tarifs
+                        </a>
+                        <a href="{{path('login')}}" class="hidden md:flex items-center px-4 py-2 text-gray-300 hover:text-primary-300 font-medium transition-colors group">
+                            <i class="fas fa-sign-in-alt mr-2 group-hover:scale-110 transition-transform"></i>
+                            Connexion
+                        </a>
+                        <a href="{{path('inscription')}}" class="bg-gradient-to-r from-primary-500 to-accent-500 text-white px-6 py-2 rounded-full font-semibold hover:from-primary-600 hover:to-accent-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                            S'inscrire
+                        </a>
+                    {% endif %}
+                    
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-button" class="lg:hidden text-gray-300 p-2 hover:bg-white/10 rounded-lg transition-colors">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="lg:hidden hidden glass-effect border-t border-white/20 py-4 shadow-xl">
+            <div class="container mx-auto px-4 space-y-2">
+                <a href="/" class="block py-3 px-4 text-gray-300 hover:bg-primary-500/20 hover:text-primary-300 rounded-lg transition-colors font-medium">
+                    Accueil
+                </a>
+                {% for cat in categories %}
+                <div class="py-2 px-4">
+                    <div class="text-white font-semibold mb-2">{{ cat.libelle }}</div>
+                    <div class="pl-4 space-y-1">
+                        {% for sousCat in cat.sousCategorie %}
+                        <a href="#" class="block py-2 text-gray-300 hover:text-primary-300 transition-colors">
+                            {{ sousCat.libelle }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+                
+                {% if not app.user %}
+                <div class="pt-4 border-t border-white/20">
+                    <a href="{{path('login')}}" class="block py-3 px-4 text-gray-300 hover:bg-primary-500/20 hover:text-primary-300 rounded-lg transition-colors font-medium">
+                        Connexion
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-20 relative z-10">
+        {% block body %}{% endblock %}
+    </main>
+
+    <!-- Footer Premium -->
+    <footer class="relative z-10 bg-dark-900/80 backdrop-blur-md border-t border-white/10 pt-20 pb-8 mt-20">
+        <div class="container mx-auto px-4">
+            <!-- Newsletter -->
+            <div class="glass-effect rounded-2xl p-8 mb-16 text-center max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold mb-4">Restez informé des nouveautés législatives</h3>
+                <p class="text-gray-300 mb-6">Abonnez-vous à notre newsletter pour recevoir les mises à jour importantes</p>
+                <div class="flex max-w-md mx-auto">
+                    <input type="email" placeholder="Votre email" class="flex-1 px-4 py-3 rounded-l-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500">
+                    <button class="bg-primary-600 hover:bg-primary-700 px-6 py-3 rounded-r-lg font-semibold transition-colors">
+                        S'abonner
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Footer Links Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <!-- Brand -->
+                <div class="lg:col-span-1">
+                    <div class="flex items-center mb-6">
+                        <img src="{{asset('assets/img/Nasurlex-logo.png')}}" alt="Nasrulex" class="h-12 w-12 mr-3">
+                        <span class="text-2xl font-black">NASRULEX</span>
+                    </div>
+                    <p class="text-gray-400 mb-6 leading-relaxed">
+                        Plateforme intelligente d'accès aux textes législatifs, réglementaires et de la doctrine fiscale du Sénégal.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-white/10 hover:bg-primary-600 rounded-lg flex items-center justify-center transition-colors group">
+                            <i class="fab fa-linkedin-in group-hover:scale-110 transition-transform"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/10 hover:bg-primary-600 rounded-lg flex items-center justify-center transition-colors group">
+                            <i class="fab fa-twitter group-hover:scale-110 transition-transform"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/10 hover:bg-primary-600 rounded-lg flex items-center justify-center transition-colors group">
+                            <i class="fab fa-facebook-f group-hover:scale-110 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Navigation -->
+                <div>
+                    <h4 class="text-lg font-bold mb-6 text-white">Navigation</h4>
+                    <ul class="space-y-3">
+                        <li><a href="/" class="text-gray-400 hover:text-primary-400 transition-colors flex items-center group">
+                            <i class="fas fa-chevron-right text-xs mr-2 group-hover:translate-x-1 transition-transform"></i>
+                            Accueil
+                        </a></li>
+                        <li><a href="{{path('tarif')}}" class="text-gray-400 hover:text-primary-400 transition-colors flex items-center group">
+                            <i class="fas fa-chevron-right text-xs mr-2 group-hover:translate-x-1 transition-transform"></i>
+                            Nos Tarifs
+                        </a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary-400 transition-colors flex items-center group">
+                            <i class="fas fa-chevron-right text-xs mr-2 group-hover:translate-x-1 transition-transform"></i>
+                            Blog Juridique
+                        </a></li>
+                    </ul>
+                </div>
+                
+                <!-- Services -->
+                <div>
+                    <h4 class="text-lg font-bold mb-6 text-white">Services</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-primary-400 transition-colors">Documents Juridiques</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary-400 transition-colors">Textes Fiscaux</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary-400 transition-colors">Doctrine Sociale</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary-400 transition-colors">Réglementation Affaires</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact -->
+                <div>
+                    <h4 class="text-lg font-bold mb-6 text-white">Contact</h4>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3 text-primary-400"></i>
+                            <span class="text-gray-400">Dakar, Almadies nº648</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-3 text-primary-400"></i>
+                            <span class="text-gray-400">contact@nasrulex.com</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-phone mt-1 mr-3 text-primary-400"></i>
+                            <span class="text-gray-400">+221 78 520 73 82</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">
+                    &copy; {{ date }} Nasrulex. Tous droits réservés.
+                </p>
+                <div class="flex space-x-6 text-sm text-gray-400">
+                    <a href="#" class="hover:text-primary-400 transition-colors">Mentions légales</a>
+                    <a href="#" class="hover:text-primary-400 transition-colors">Confidentialité</a>
+                    <a href="#" class="hover:text-primary-400 transition-colors">CGU</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button Animé -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 w-14 h-14 bg-primary-600 hover:bg-primary-700 text-white rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 opacity-0 invisible hover:scale-110 group z-40">
+        <i class="fas fa-chevron-up group-hover:-translate-y-0.5 transition-transform"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // Initialisation AOS
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+
+        // Preloader
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                preloader.style.visibility = 'hidden';
+            }, 1000);
+        });
+
+        // Mobile Menu
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+            this.querySelector('i').classList.toggle('fa-bars');
+            this.querySelector('i').classList.toggle('fa-times');
+        });
+
+        // Back to Top
+        const backToTop = document.getElementById('back-to-top');
+        
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.remove('opacity-0', 'invisible');
+                backToTop.classList.add('opacity-100', 'visible');
+            } else {
+                backToTop.classList.remove('opacity-100', 'visible');
+                backToTop.classList.add('opacity-0', 'invisible');
+            }
+        });
+        
+        backToTop.addEventListener('click', function() {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.classList.add('shadow-lg', 'bg-white/10');
+            } else {
+                header.classList.remove('shadow-lg', 'bg-white/10');
+            }
+        });
+    </script>
+    
+    {% block javascripts %}{% endblock %}
+</body>
+</html>

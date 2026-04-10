@@ -1,0 +1,37 @@
+   {% extends 'admin.html.twig' %} {% block body %}
+<div class="mt-5">
+   <div class="table-responsive">
+                  <table class="table align-items-center table-flush">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Nom du Packs</th>
+                        <th>Reduction en %</th>
+                        <th>Price </th>
+                        <th>Prix Actuel</th>
+                        <th>Actions </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                  
+
+                        
+
+                  {% for pack in packs %}
+                      <tr>
+                        <td>{{ pack.libelle }}</td>
+                        <td>{% if pack.reduction > 0 %}{{ pack.reduction  }} %{% else %} pas de réduction {% endif %}</td>
+                        <td>{{ pack.price  }} FCFA</td>
+                        <td><span class="badge badge-success">{% if pack.reduction > 0 %}{{ pack.reduction * pack.price / 100  }} FCFA{% else %} {{ pack.price  }} FCFA {% endif %}</span></td>
+                        <td><a href="{{path("editPack",{ id : pack.id })}}" class="btn btn-sm btn-primary">Modifier</a>  {% if pack.principal == false %}<a onclick="return confirm('Voulez-vous vraiment suppprimer')" href="{{path('removePack',{ id:pack.id })}}" class="btn btn-danger  ml-1">
+                                        <i class="fas fa-trash"></i>
+                                    </a>{% endif %}</td>
+                      </tr>
+                     {% endfor %}
+                    
+                    </tbody>
+                  </table>
+                </div>
+                  </div>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+   {% extends 'admin.html.twig' %} {% block body %}
+<div class="mt-5">
+    <div class="container">
+      {% for message in app.flashes('danger') %}
+                    <div class="alert alert-danger">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+      <form class="container needs-validation"  action="" method="post" novalidate>
+ <div class="col-md-6">
+                    
+
+                         <label for="validationCustomUsername">Ancien Mot de passe :</label>
+                            <input type="text" name="ancienpass" class="form-control" id="validationCustomUsername"  placeholder="Votre Ancien Mot de passe " required>
+                           <div class="invalid-feedback">
+                           Ancien mots de passe requis
+                            </div>
+
+
+                         <label for="validationCustomUsername">Nouveau  Mot de passe :</label>
+                            <input type="text" name="newpass" class="form-control" id="validationCustomUsername"  placeholder="Votre Nouveau  Mot de passe " required>
+                           <div class="invalid-feedback">
+                            requis
+                            </div>
+
+
+                         <label for="validationCustomUsername">Réécrivez Votre Nouveau  Mot de passe :</label>
+                            <input type="text" name="rnewpass" class="form-control" id="validationCustomUsername"  placeholder="Votre Nouveau  Mot de passe " required>
+                           <div class="invalid-feedback">
+                            requis
+                            </div>
+
+                    </div>
+
+      </div>
+      <div class="col-md-12 mt-5 text-center">
+                    <button type="submit" class="btn btn-success   "> Changer le Mots de passe</button>
+
+                </div>
+                </form>
+
+</div>
+{% endblock %}

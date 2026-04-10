@@ -1,0 +1,232 @@
+{% extends 'admin.html.twig' %}
+
+{% block body %}
+<style type="text/css">
+    .stat-card {
+        background: white;
+        border: 1px solid #e2e8f0;
+        transition: all 0.3s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feature-card {
+        background: white;
+        border: 1px solid #e2e8f0;
+        transition: all 0.3s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        border-color: #059669;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        color: white;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+    }
+</style>
+
+<div class="min-h-screen fade-in">
+    <!-- Header Section -->
+    <div class="bg-white rounded-xl p-6 mb-6 shadow-sm border border-gray-200">
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center">
+            <div class="flex-1">
+                <div class="flex items-center">
+                    <div class="w-14 h-14 bg-primary-light rounded-xl flex items-center justify-center mr-5 border border-green-100">
+                        <i class="fas fa-tachometer-alt text-primary text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-primary">Tableau de Bord</h1>
+                        <p class="text-secondary mt-1">
+                            Bienvenue, {{ app.user.prenom }} 
+                            <span class="badge-primary ml-2">
+                                {{ app.user.role == "ROLE_ADMIN" ? "Administrateur" : "Utilisateur" }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Stats -->
+            <div class="flex items-center space-x-6 mt-4 lg:mt-0">
+                <div class="text-center">
+                    <div class="text-xl font-bold text-primary">{% if stats is defined %}{{ stats.totalDocs }}{% else %}0{% endif %}</div>
+                    <div class="text-muted text-sm">Documents</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-xl font-bold text-primary">{% if stats is defined %}{{ stats.totalUsers }}{% else %}0{% endif %}</div>
+                    <div class="text-muted text-sm">Utilisateurs</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-xl font-bold text-primary">{% if stats is defined %}{{ stats.activePacks }}{% else %}0{% endif %}</div>
+                    <div class="text-muted text-sm">Packs Actifs</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flash Messages -->
+    <div class="mb-6">
+        {% for message in app.flashes('success') %}
+        <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-3">
+            <div class="flex items-center">
+                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                <span class="text-green-800">{{ message }}</span>
+            </div>
+        </div>
+        {% endfor %}
+        
+        {% for message in app.flashes('danger') %}
+        <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-3">
+            <div class="flex items-center">
+                <i class="fas fa-exclamation-circle text-red-500 mr-3"></i>
+                <span class="text-red-800">{{ message }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Admin Dashboard -->
+    {% if app.user.role == "ROLE_ADMIN" %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
+        <!-- Ajouter Docs -->
+        <div class="feature-card rounded-xl p-5 card-hover group">
+            <a href="{{path('addDoc')}}" class="block text-decoration-none">
+                <div class="flex items-center mb-4">
+                    <div class="icon-wrapper w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mr-4 group-hover:bg-blue-100 transition-colors border border-blue-100">
+                        <i class="fas fa-file-upload text-blue-600 text-lg"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-secondary group-hover:text-primary">Ajouter Docs</h3>
+                </div>
+                <p class="text-muted text-sm">Ajouter de nouveaux documents à la base</p>
+            </a>
+        </div>
+
+        <!-- Ajouter un Pack -->
+        <div class="feature-card rounded-xl p-5 card-hover group">
+            <a href="{{path('addPack')}}" class="block text-decoration-none">
+                <div class="flex items-center mb-4">
+                    <div class="icon-wrapper w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center mr-4 group-hover:bg-green-100 transition-colors border border-green-100">
+                        <i class="fab fa-gg-circle text-green-600 text-lg"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-secondary group-hover:text-primary">Ajouter un Pack</h3>
+                </div>
+                <p class="text-muted text-sm">Créer de nouveaux packs d'abonnement</p>
+            </a>
+        </div>
+
+        <!-- Les Packs -->
+        <div class="feature-card rounded-xl p-5 card-hover group">
+            <a href="{{path('Pack')}}" class="block text-decoration-none">
+                <div class="flex items-center mb-4">
+                    <div class="icon-wrapper w-12 h-12 bg-teal-50 rounded-lg flex items-center justify-center mr-4 group-hover:bg-teal-100 transition-colors border border-teal-100">
+                        <i class="fas fa-stop-circle text-teal-600 text-lg"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-secondary group-hover:text-primary">Les Packs</h3>
+                </div>
+                <p class="text-muted text-sm">Gérer les packs existants</p>
+            </a>
+        </div>
+
+        <!-- Mots de passe -->
+        <div class="feature-card rounded-xl p-5 card-hover group">
+            <a href="{{path('passe')}}" class="block text-decoration-none">
+                <div class="flex items-center mb-4">
+                    <div class="icon-wrapper w-12 h-12 bg-amber-50 rounded-lg flex items-center justify-center mr-4 group-hover:bg-amber-100 transition-colors border border-amber-100">
+                        <i class="fas fa-lock text-amber-600 text-lg"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-secondary group-hover:text-primary">Mots de passe</h3>
+                </div>
+                <p class="text-muted text-sm">Gérer les accès et sécurité</p>
+            </a>
+        </div>
+
+        <!-- Offrir un pack -->
+        <div class="feature-card rounded-xl p-5 card-hover group">
+            <a href="{{path('offrir')}}" class="block text-decoration-none">
+                <div class="flex items-center mb-4">
+                    <div class="icon-wrapper w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center mr-4 group-hover:bg-purple-100 transition-colors border border-purple-100">
+                        <i class="fas fa-gift text-purple-600 text-lg"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-secondary group-hover:text-primary">Offrir un pack</h3>
+                </div>
+                <p class="text-muted text-sm">Offrir des packs aux utilisateurs</p>
+            </a>
+        </div>
+
+        <!-- Mode Gratuit -->
+        <div class="feature-card rounded-xl p-5 card-hover group">
+            <a href="{{path('modefree')}}" class="block text-decoration-none">
+                <div class="flex items-center mb-4">
+                    <div class="icon-wrapper w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center mr-4 group-hover:bg-indigo-100 transition-colors border border-indigo-100">
+                        <i class="fas fa-toggle-on text-indigo-600 text-lg"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-secondary group-hover:text-primary">Mode Gratuit</h3>
+                </div>
+                <p class="text-muted text-sm">Activer/Désactiver le mode gratuit</p>
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Quick Actions -->
+    <div class="mt-8">
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+            <h3 class="text-xl font-bold text-primary mb-6 flex items-center">
+                <i class="fas fa-bolt mr-3 text-amber-500"></i>
+                Actions Rapides
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                {% if app.user.role == "ROLE_ADMIN" %}
+                <a href="{{path('addDoc')}}" class="btn-primary px-4 py-3 rounded-lg text-center transition-all duration-300 group font-semibold">
+                    <i class="fas fa-plus mr-2 group-hover:scale-110 transition-transform"></i>
+                    Nouveau Document
+                </a>
+                <a href="{{path('addPack')}}" class="btn-primary px-4 py-3 rounded-lg text-center transition-all duration-300 group font-semibold">
+                    <i class="fas fa-cube mr-2 group-hover:scale-110 transition-transform"></i>
+                    Nouveau Pack
+                </a>
+                <a href="{{path('Pack')}}" class="btn-primary px-4 py-3 rounded-lg text-center transition-all duration-300 group font-semibold">
+                    <i class="fas fa-list mr-2 group-hover:scale-110 transition-transform"></i>
+                    Voir Packs
+                </a>
+                <a href="{{path('passe')}}" class="btn-primary px-4 py-3 rounded-lg text-center transition-all duration-300 group font-semibold">
+                    <i class="fas fa-shield-alt mr-2 group-hover:scale-110 transition-transform"></i>
+                    Sécurité
+                </a>
+                {% else %}
+                <a href="{{path('abonnement')}}" class="btn-primary px-4 py-3 rounded-lg text-center transition-all duration-300 group font-semibold">
+                    <i class="fas fa-rocket mr-2 group-hover:scale-110 transition-transform"></i>
+                    Mes Abonnements
+                </a>
+                <a href="{{path('passe')}}" class="btn-primary px-4 py-3 rounded-lg text-center transition-all duration-300 group font-semibold">
+                    <i class="fas fa-lock mr-2 group-hover:scale-110 transition-transform"></i>
+                    Mot de Passe
+                </a>
+                <a href="#" class="btn-primary px-4 py-3 rounded-lg text-center transition-all duration-300 group font-semibold">
+                    <i class="fas fa-cog mr-2 group-hover:scale-110 transition-transform"></i>
+                    Paramètres
+                </a>
+                <a href="#" class="btn-primary px-4 py-3 rounded-lg text-center transition-all duration-300 group font-semibold">
+                    <i class="fas fa-question-circle mr-2 group-hover:scale-110 transition-transform"></i>
+                    Aide
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

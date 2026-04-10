@@ -1,0 +1,841 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<!-- PDF Viewer Section -->
+<section class="min-h-screen relative py-8 bg-gradient-to-br from-dark-900 via-primary-900 to-dark-800">
+    <!-- Background Animations -->
+    <div class="absolute inset-0">
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500 rounded-full opacity-20 blur-3xl"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent-500 rounded-full opacity-30 blur-3xl"></div>
+    </div>
+
+    <div class="container mx-auto px-4 relative z-10">
+        <!-- Header avec informations du document -->
+        <div class="glass-effect rounded-2xl p-6 mb-6 border border-white/20">
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center">
+                <div class="flex-1">
+                    <div class="flex items-center mb-3">
+                        <div class="w-12 h-12 bg-primary-500/20 rounded-2xl flex items-center justify-center mr-4">
+                            <i class="fas fa-file-pdf text-primary-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-2xl font-bold text-white">{{ doc.description }}</h1>
+                            <div class="flex flex-wrap items-center gap-4 mt-2">
+                                <span class="text-gray-300 text-sm flex items-center">
+                                    <i class="fas fa-layer-group mr-2"></i>
+                                    {{ doc.categorie.libelle }} › {{ doc.souscat.libelle }}
+                                </span>
+                                <span class="text-gray-300 text-sm flex items-center">
+                                    <i class="far fa-calendar mr-2"></i>
+                                    {{ doc.CreatedAt|date('d/m/Y') }}
+                                </span>
+                                {% if doc.natures.libelle == "En vigueur" %}
+                                <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-xs font-semibold flex items-center">
+                                    <i class="fas fa-check-circle mr-1"></i> En vigueur
+                                </span>
+                                {% elseif doc.natures.libelle == "Abrogé partiellement" %}
+                                <span class="bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full text-xs font-semibold flex items-center">
+                                    <i class="fas fa-exclamation-triangle mr-1"></i> Abrogé partiellement
+                                </span>
+                                {% else %}
+                                <span class="bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-xs font-semibold flex items-center">
+                                    <i class="fas fa-times-circle mr-1"></i> {{ doc.natures.libelle }}
+                                </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Actions rapides -->
+                <div class="flex items-center space-x-3 mt-4 lg:mt-0">
+                    <button onclick="window.print()" class="bg-primary-500/20 hover:bg-primary-500/30 text-primary-400 px-4 py-2 rounded-xl font-semibold transition-all duration-300 group">
+                        <i class="fas fa-print mr-2 group-hover:scale-110 transition-transform"></i>
+                        Imprimer
+                    </button>
+                    {% if app.user.role == "ROLE_ADMIN" %}
+                    <a href="{{path('editDoc',{id:doc.id})}}" class="bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 px-4 py-2 rounded-xl font-semibold transition-all duration-300 group">
+                        <i class="fas fa-edit mr-2 group-hover:scale-110 transition-transform"></i>
+                        Modifier
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
+            <!-- Sidebar des contrôles -->
+            <div class="xl:col-span-1">
+                <div class="glass-effect rounded-2xl p-6 border border-white/20 sticky top-24">
+                    <!-- Navigation pages -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center">
+                            <i class="fas fa-copy mr-2"></i>
+                            Navigation
+                        </h3>
+                        <div class="flex items-center justify-between bg-white/5 rounded-xl p-3">
+                            <button id="prev" class="w-10 h-10 bg-primary-500/20 hover:bg-primary-500/30 rounded-xl flex items-center justify-center text-primary-400 hover:text-primary-300 transition-all duration-300 group disabled:opacity-50 disabled:cursor-not-allowed">
+                                <i class="fas fa-chevron-left group-hover:scale-110 transition-transform"></i>
+                            </button>
+                            
+                            <div class="text-center">
+                                <span class="text-white font-semibold text-sm">Page</span>
+                                <div class="flex items-center space-x-2">
+                                    <span id="page_num" class="text-primary-400 font-bold text-lg">1</span>
+                                    <span class="text-gray-400">/</span>
+                                    <span id="page_count" class="text-gray-400">?</span>
+                                </div>
+                            </div>
+                            
+                            <button id="next" class="w-10 h-10 bg-primary-500/20 hover:bg-primary-500/30 rounded-xl flex items-center justify-center text-primary-400 hover:text-primary-300 transition-all duration-300 group disabled:opacity-50 disabled:cursor-not-allowed">
+                                <i class="fas fa-chevron-right group-hover:scale-110 transition-transform"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Navigation par saisie directe -->
+                        
+                    </div>
+
+                    <!-- Zoom -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center">
+                            <i class="fas fa-search mr-2"></i>
+                            Zoom
+                        </h3>
+                        <div class="flex items-center justify-between space-x-3">
+                            <button id="zoom-out" class="flex-1 bg-white/5 hover:bg-white/10 text-white py-2 rounded-xl transition-all duration-300 group">
+                                <i class="fas fa-search-minus group-hover:scale-110 transition-transform"></i>
+                            </button>
+                            <span id="zoom-level" class="text-primary-400 font-bold text-sm min-w-[50px] text-center">100%</span>
+                            <button id="zoom-in" class="flex-1 bg-white/5 hover:bg-white/10 text-white py-2 rounded-xl transition-all duration-300 group">
+                                <i class="fas fa-search-plus group-hover:scale-110 transition-transform"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Rotation -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center">
+                            <i class="fas fa-redo mr-2"></i>
+                            Rotation
+                        </h3>
+                        <div class="flex space-x-3">
+                            <button id="rotate-left" class="flex-1 bg-white/5 hover:bg-white/10 text-white py-2 rounded-xl transition-all duration-300 group">
+                                <i class="fas fa-undo group-hover:scale-110 transition-transform"></i>
+                            </button>
+                            <button id="rotate-right" class="flex-1 bg-white/5 hover:bg-white/10 text-white py-2 rounded-xl transition-all duration-300 group">
+                                <i class="fas fa-redo group-hover:scale-110 transition-transform"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Mode d'affichage -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center">
+                            <i class="fas fa-desktop mr-2"></i>
+                            Affichage
+                        </h3>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button id="fit-width" class="bg-primary-500/20 text-primary-400 py-2 rounded-xl transition-all duration-300 group">
+                                <i class="fas fa-arrows-alt-h group-hover:scale-110 transition-transform"></i>
+                            </button>
+                            <button id="fit-height" class="bg-white/5 hover:bg-white/10 text-white py-2 rounded-xl transition-all duration-300 group">
+                                <i class="fas fa-arrows-alt-v group-hover:scale-110 transition-transform"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Recherche dans le document -->
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center">
+                            <i class="fas fa-search mr-2"></i>
+                            Recherche
+                        </h3>
+                        <div class="relative">
+                            <input type="text" id="search-input" placeholder="Rechercher..." 
+                                   class="w-full bg-white/5 border border-white/20 rounded-xl py-2 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                            <i class="fas fa-search absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                        <div id="search-results" class="mt-2 text-sm text-gray-400 hidden">
+                            Résultats: <span id="match-count">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Zone d'affichage PDF -->
+            <div class="xl:col-span-3">
+                <div class="glass-effect rounded-2xl p-6 border border-white/20">
+                    <!-- Barre d'outils supérieure -->
+                    <div class="flex flex-wrap items-center justify-between mb-6">
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-white/5 rounded-xl px-4 py-2">
+                                <span class="text-white text-sm">Document sécurisé</span>
+                            </div>
+                            <div class="hidden md:flex items-center text-green-400 text-sm">
+                                <i class="fas fa-shield-alt mr-2"></i>
+                                Affichage protégé
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-2 mt-4 md:mt-0">
+                            <button id="fullscreen" class="bg-white/5 hover:bg-white/10 text-white w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 group">
+                                <i class="fas fa-expand group-hover:scale-110 transition-transform"></i>
+                            </button>
+                            <button id="download-disabled" class="bg-red-500/20 text-red-400 w-10 h-10 rounded-xl flex items-center justify-center cursor-not-allowed" title="Téléchargement désactivé">
+                                <i class="fas fa-ban"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Conteneur PDF -->
+                    <div class="bg-black/20 rounded-2xl p-4 border border-white/10">
+                        <div id="pdf-container" class="relative overflow-hidden rounded-xl">
+                            <canvas id="the-canvas" class="mx-auto shadow-2xl transition-all duration-300 bg-white"></canvas>
+                            
+                            <!-- Overlay de protection -->
+                            <div class="absolute inset-0 bg-transparent pointer-events-none" id="protection-overlay"></div>
+                            
+                            <!-- Loading avec progression -->
+                            <div id="pdf-loading" class="absolute inset-0 bg-black/50 flex items-center justify-center rounded-xl">
+                                <div class="text-center">
+                                    <div class="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                                    <p class="text-white font-semibold" id="loading-text">Chargement du document...</p>
+                                    <div class="w-48 bg-gray-700 rounded-full h-2 mt-4 mx-auto">
+                                        <div id="progress-bar" class="bg-primary-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                                    </div>
+                                    <p id="progress-text" class="text-gray-300 text-sm mt-2">0%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pagination mobile -->
+                    <div class="flex items-center justify-between mt-6 md:hidden">
+                        <button id="prev-mobile" class="bg-primary-500/20 hover:bg-primary-500/30 text-primary-400 px-4 py-2 rounded-xl font-semibold transition-all duration-300 group">
+                            <i class="fas fa-chevron-left mr-2 group-hover:scale-110 transition-transform"></i>
+                            Précédent
+                        </button>
+                        
+                        <div class="text-center">
+                            <span class="text-white text-sm">Page </span>
+                            <span id="page_num_mobile" class="text-primary-400 font-bold">1</span>
+                            <span class="text-gray-400">/</span>
+                            <span id="page_count_mobile" class="text-gray-400">?</span>
+                        </div>
+                        
+                        <button id="next-mobile" class="bg-primary-500/20 hover:bg-primary-500/30 text-primary-400 px-4 py-2 rounded-xl font-semibold transition-all duration-300 group">
+                            Suivant
+                            <i class="fas fa-chevron-right ml-2 group-hover:scale-110 transition-transform"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Métadonnées du document -->
+                <div class="glass-effect rounded-2xl p-6 border border-white/20 mt-6">
+                    <h3 class="text-lg font-bold text-white mb-4 flex items-center">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        Informations du document
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary-500/20 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-tag text-primary-400 text-sm"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-400 text-sm">Catégorie</p>
+                                <p class="text-white font-semibold">{{ doc.categorie.libelle }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary-500/20 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-folder text-primary-400 text-sm"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-400 text-sm">Sous-catégorie</p>
+                                <p class="text-white font-semibold">{{ doc.souscat.libelle }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary-500/20 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-calendar text-primary-400 text-sm"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-400 text-sm">Date de publication</p>
+                                <p class="text-white font-semibold">{{ doc.CreatedAt|date('d/m/Y') }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary-500/20 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-balance-scale text-primary-400 text-sm"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-400 text-sm">Statut juridique</p>
+                                <p class="text-white font-semibold">{{ doc.natures.libelle }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PDF.js Script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+<script>
+// Configuration PDF.js
+// Configuration PDF.js
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+
+// Variables globales
+let pdfDoc = null;
+let pageNum = 1;
+let pageRendering = false;
+let pageNumPending = null;
+let scale = 1.2;
+let rotation = 0;
+let canvas = document.getElementById('the-canvas');
+let ctx = canvas.getContext('2d');
+let currentSearch = null;
+let currentRenderTask = null;
+const PDF_LOAD_TIMEOUT = 30000;
+
+// Initialisation
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Initialisation de la visionneuse PDF...');
+    
+    // Préparer la source PDF selon le type d'utilisateur
+    let pdfSource;
+    {% if app.user.role == 'ROLE_ADMIN' %}
+        pdfSource = "data:application/pdf;base64,{{ doc.fichier }}";
+        console.log('Chargement PDF en base64');
+    {% else %}
+        pdfSource = "{{ doc.fichier }}";
+        console.log('Chargement PDF depuis URL:', pdfSource);
+    {% endif %}
+    
+    // Charger le PDF
+    loadPDF(pdfSource);
+    
+    // Événements
+    setupEventListeners();
+    
+    // Protection contre le clic droit et téléchargement
+    setupProtection();
+});
+
+function loadPDF(source) {
+    console.log('Début du chargement PDF...');
+    
+    const loadingTimeout = setTimeout(() => {
+        showError("Timeout de chargement - le document est trop long à charger");
+    }, PDF_LOAD_TIMEOUT);
+
+    try {
+        const loadingTask = pdfjsLib.getDocument({
+            url: source,
+            withCredentials: false,
+            cMapUrl: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/cmaps/',
+            cMapPacked: true
+        });
+        
+        loadingTask.onProgress = function(progressData) {
+            const percent = progressData.total ? Math.round((progressData.loaded / progressData.total) * 100) : 0;
+            updateProgress(percent);
+        };
+        
+        loadingTask.promise.then(function(pdfDoc_) {
+            clearTimeout(loadingTimeout);
+            console.log('PDF chargé avec succès, nombre de pages:', pdfDoc_.numPages);
+            
+            pdfDoc = pdfDoc_;
+            document.getElementById('page_count').textContent = pdfDoc.numPages;
+            document.getElementById('page_count_mobile').textContent = pdfDoc.numPages;
+            
+            updateProgress(100);
+            
+            setTimeout(() => {
+                document.getElementById('pdf-loading').style.display = 'none';
+                scale = getInitialScale();
+                updateZoomDisplay();
+                renderPage(pageNum);
+            }, 500);
+            
+        }).catch(function(error) {
+            clearTimeout(loadingTimeout);
+            console.error('Erreur de chargement PDF:', error);
+            showError("Erreur de chargement du document: " + (error.message || "Format non supporté"));
+        });
+    } catch (error) {
+        clearTimeout(loadingTimeout);
+        console.error('Erreur lors de l\'initialisation:', error);
+        showError("Erreur d'initialisation du document");
+    }
+}
+
+function getInitialScale() {
+    const width = window.innerWidth;
+    if (width < 768) return 0.8;
+    if (width < 1024) return 1.0;
+    return 1.2;
+}
+
+function updateProgress(percent) {
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    const loadingText = document.getElementById('loading-text');
+    
+    if (progressBar) progressBar.style.width = percent + '%';
+    if (progressText) progressText.textContent = percent + '%';
+    if (loadingText) {
+        loadingText.textContent = percent === 100 ? 
+            'Document chargé, préparation de l\'affichage...' : 
+            'Chargement du document...';
+    }
+}
+
+function showError(message) {
+    console.error('Erreur PDF:', message);
+    const loadingElement = document.getElementById('pdf-loading');
+    if (loadingElement) {
+        loadingElement.innerHTML = `
+            <div class="text-center">
+                <i class="fas fa-exclamation-triangle text-red-400 text-4xl mb-4"></i>
+                <p class="text-white font-semibold">${message}</p>
+                <p class="text-gray-400 mt-2">Veuillez réessayer ou contacter l'administrateur</p>
+                <button onclick="location.reload()" class="mt-4 bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-xl transition-colors">
+                    <i class="fas fa-redo mr-2"></i>Réessayer
+                </button>
+            </div>
+        `;
+    }
+}
+
+function renderPage(num) {
+    if (!pdfDoc) {
+        console.error('PDF non chargé');
+        return;
+    }
+    
+    pageRendering = true;
+    
+    // Annuler le rendu précédent s'il existe
+    if (currentRenderTask) {
+        currentRenderTask.cancel();
+    }
+    
+    pdfDoc.getPage(num).then(function(page) {
+        const viewport = page.getViewport({ 
+            scale: scale,
+            rotation: rotation
+        });
+        
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+        
+        const renderContext = {
+            canvasContext: ctx,
+            viewport: viewport
+        };
+        
+        currentRenderTask = page.render(renderContext);
+        
+        currentRenderTask.promise.then(function() {
+            pageRendering = false;
+            currentRenderTask = null;
+            
+            if (pageNumPending !== null) {
+                renderPage(pageNumPending);
+                pageNumPending = null;
+            }
+            
+            updatePageCounters(num);
+            updateNavigationButtons();
+        }).catch(function(error) {
+            if (error.name !== 'RenderingCancelled') {
+                console.error('Erreur de rendu:', error);
+            }
+            pageRendering = false;
+        });
+    }).catch(function(error) {
+        console.error('Erreur de chargement de page:', error);
+        pageRendering = false;
+    });
+}
+
+function updatePageCounters(num) {
+    document.getElementById('page_num').textContent = num;
+    document.getElementById('page_num_mobile').textContent = num;
+}
+
+function updateNavigationButtons() {
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    const prevMobile = document.getElementById('prev-mobile');
+    const nextMobile = document.getElementById('next-mobile');
+    
+    const isFirstPage = pageNum <= 1;
+    const isLastPage = pageNum >= pdfDoc.numPages;
+    
+    if (prevBtn) prevBtn.disabled = isFirstPage;
+    if (nextBtn) nextBtn.disabled = isLastPage;
+    if (prevMobile) prevMobile.disabled = isFirstPage;
+    if (nextMobile) nextMobile.disabled = isLastPage;
+}
+
+function queueRenderPage(num) {
+    if (pageRendering) {
+        pageNumPending = num;
+    } else {
+        renderPage(num);
+    }
+}
+
+function onPrevPage() {
+    if (pageNum <= 1) return;
+    pageNum--;
+    queueRenderPage(pageNum);
+}
+
+function onNextPage() {
+    if (pageNum >= pdfDoc.numPages) return;
+    pageNum++;
+    queueRenderPage(pageNum);
+}
+
+function zoomIn() {
+    if (!pdfDoc) return;
+    scale = Math.min(scale * 1.2, 3.0);
+    updateZoomDisplay();
+    queueRenderPage(pageNum);
+}
+
+function zoomOut() {
+    if (!pdfDoc) return;
+    scale = Math.max(scale / 1.2, 0.5);
+    updateZoomDisplay();
+    queueRenderPage(pageNum);
+}
+
+function updateZoomDisplay() {
+    document.getElementById('zoom-level').textContent = Math.round(scale * 100) + '%';
+}
+
+function rotateLeft() {
+    if (!pdfDoc) return;
+    rotation = (rotation - 90) % 360;
+    queueRenderPage(pageNum);
+}
+
+function rotateRight() {
+    if (!pdfDoc) return;
+    rotation = (rotation + 90) % 360;
+    queueRenderPage(pageNum);
+}
+
+function fitToWidth() {
+    if (!pdfDoc) return;
+    
+    pdfDoc.getPage(pageNum).then(function(page) {
+        const container = document.getElementById('pdf-container');
+        const containerWidth = container.clientWidth - 80;
+        const viewport = page.getViewport({ scale: 1 });
+        const newScale = containerWidth / viewport.width;
+        
+        scale = Math.min(newScale, 3.0);
+        updateZoomDisplay();
+        queueRenderPage(pageNum);
+    });
+}
+
+function fitToHeight() {
+    if (!pdfDoc) return;
+    
+    pdfDoc.getPage(pageNum).then(function(page) {
+        const container = document.getElementById('pdf-container');
+        const containerHeight = container.clientHeight - 80;
+        const viewport = page.getViewport({ scale: 1 });
+        const newScale = containerHeight / viewport.height;
+        
+        scale = Math.min(newScale, 3.0);
+        updateZoomDisplay();
+        queueRenderPage(pageNum);
+    });
+}
+
+function jumpToPage() {
+    if (!pdfDoc) return;
+    
+    const pageInput = document.getElementById('page-jump');
+    const pageNumInput = parseInt(pageInput.value);
+    
+    if (pageNumInput >= 1 && pageNumInput <= pdfDoc.numPages) {
+        pageNum = pageNumInput;
+        queueRenderPage(pageNum);
+        pageInput.value = '';
+    } else {
+        showProtectionMessage('Numéro de page invalide. Doit être entre 1 et ' + pdfDoc.numPages);
+    }
+}
+
+function setupEventListeners() {
+    // Navigation
+    document.getElementById('prev').addEventListener('click', onPrevPage);
+    document.getElementById('next').addEventListener('click', onNextPage);
+    document.getElementById('prev-mobile').addEventListener('click', onPrevPage);
+    document.getElementById('next-mobile').addEventListener('click', onNextPage);
+    
+    // Navigation par saisie
+    const jumpBtn = document.getElementById('jump-btn');
+    const pageJumpInput = document.getElementById('page-jump');
+    
+    if (jumpBtn) {
+        jumpBtn.addEventListener('click', jumpToPage);
+    }
+    
+    if (pageJumpInput) {
+        pageJumpInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                jumpToPage();
+            }
+        });
+    }
+    
+    // Zoom
+    document.getElementById('zoom-in').addEventListener('click', zoomIn);
+    document.getElementById('zoom-out').addEventListener('click', zoomOut);
+    
+    // Rotation
+    document.getElementById('rotate-left').addEventListener('click', rotateLeft);
+    document.getElementById('rotate-right').addEventListener('click', rotateRight);
+    
+    // Affichage
+    document.getElementById('fit-width').addEventListener('click', fitToWidth);
+    document.getElementById('fit-height').addEventListener('click', fitToHeight);
+    
+    // Plein écran
+    document.getElementById('fullscreen').addEventListener('click', toggleFullscreen);
+    
+    // Recherche
+    document.getElementById('search-input').addEventListener('input', performSearch);
+    
+    // Raccourcis clavier
+    document.addEventListener('keydown', handleKeyboardShortcuts);
+    
+    // Redimensionnement
+    let resizeTimeout;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            if (pdfDoc && !pageRendering) {
+                queueRenderPage(pageNum);
+            }
+        }, 250);
+    });
+}
+
+function handleKeyboardShortcuts(e) {
+    if (e.target.tagName === 'INPUT') return;
+    
+    switch(e.key) {
+        case 'ArrowLeft':
+            e.preventDefault();
+            onPrevPage();
+            break;
+        case 'ArrowRight':
+            e.preventDefault();
+            onNextPage();
+            break;
+        case '+':
+        case '=':
+            e.preventDefault();
+            zoomIn();
+            break;
+        case '-':
+            e.preventDefault();
+            zoomOut();
+            break;
+        case 'Home':
+            e.preventDefault();
+            if (pdfDoc) {
+                pageNum = 1;
+                queueRenderPage(pageNum);
+            }
+            break;
+        case 'End':
+            e.preventDefault();
+            if (pdfDoc) {
+                pageNum = pdfDoc.numPages;
+                queueRenderPage(pageNum);
+            }
+            break;
+    }
+}
+
+function toggleFullscreen() {
+    const container = document.getElementById('pdf-container');
+    
+    if (!document.fullscreenElement) {
+        container.requestFullscreen().catch(err => {
+            console.error('Erreur plein écran:', err);
+        });
+    } else {
+        document.exitFullscreen();
+    }
+}
+
+function performSearch() {
+    const searchTerm = document.getElementById('search-input').value;
+    const resultsDiv = document.getElementById('search-results');
+    
+    if (searchTerm.length < 2) {
+        resultsDiv.classList.add('hidden');
+        return;
+    }
+    
+    resultsDiv.classList.remove('hidden');
+    document.getElementById('match-count').textContent = 'Fonctionnalité avancée';
+}
+
+function setupProtection() {
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        showProtectionMessage('Cette fonctionnalité est désactivée pour la protection des documents.');
+    });
+    
+    document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+    });
+    
+    canvas.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+    
+    document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+    });
+}
+
+function showProtectionMessage(message) {
+    const toast = document.createElement('div');
+    toast.className = 'fixed top-4 right-4 bg-red-500/90 text-white px-6 py-3 rounded-xl shadow-2xl z-50 transform translate-x-full transition-transform duration-300';
+    toast.innerHTML = `
+        <div class="flex items-center">
+            <i class="fas fa-shield-alt mr-3"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.transform = 'translateX(0)';
+    }, 100);
+    
+    setTimeout(() => {
+        toast.style.transform = 'translateX(400px)';
+        setTimeout(() => {
+            if (document.body.contains(toast)) {
+                document.body.removeChild(toast);
+            }
+        }, 300);
+    }, 3000);
+}
+
+// Nettoyage
+window.addEventListener('beforeunload', function() {
+    if (currentRenderTask) {
+        currentRenderTask.cancel();
+    }
+    if (pdfDoc) {
+        pdfDoc.destroy();
+    }
+});
+
+document.addEventListener('fullscreenchange', function() {
+    if (pdfDoc && !pageRendering) {
+        setTimeout(() => {
+            queueRenderPage(pageNum);
+        }, 300);
+    }
+});
+</script>
+
+<style>
+/* Styles pour le plein écran */
+#pdf-container:fullscreen {
+    background: black;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#pdf-container:fullscreen canvas {
+    max-height: 90vh;
+    max-width: 90vw;
+}
+
+/* Animation pour les boutons désactivés */
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+button:disabled:hover {
+    transform: none !important;
+}
+
+/* Effet de hover amélioré */
+.glass-effect {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+/* Transition pour le canvas */
+#the-canvas {
+    transition: all 0.3s ease;
+}
+
+/* Styles pour l'input de numéro de page */
+#page-jump::-webkit-outer-spin-button,
+#page-jump::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#page-jump {
+    -moz-appearance: textfield;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    #the-canvas {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    .glass-effect {
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+}
+
+/* Animation de pulse pour le loading */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+</style>
+{% endblock %}

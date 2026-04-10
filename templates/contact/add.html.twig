@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block contente %}
+  {{ form_start(form) }}
+  {{form_row(form.nomComplet,{'label':'Nom d\'utilisateur','attr':{'placeholder':'Entrer votre non d\'utilisateur'}})}}
+  {{form_row(form.username,{'label':'Mot de Passe','attr':{'placeholder':'Entrer votre mot de pass'}})}}
+ {{form_row(form.telephone,{'label':'Mot de Passe','attr':{'placeholder':'Entrer votre mot de pass'}})}}
+ {{form_row(form.message,{'label':'Mot de Passe','attr':{'placeholder':'Entrer votre mot de pass'}})}}
+  <input name="" id="" class="btn btn-success" type="submit" value="Inscription">
+  {{ form_end(form)}}
+{% endblock %}

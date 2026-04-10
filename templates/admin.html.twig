@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Dashboard Admin - Nasurlex</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Styles personnalisés avec thème clair et professionnel */
+        .light-bg {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+        
+        .glass-effect-light {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .icon-wrapper {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover .icon-wrapper {
+            transform: scale(1.05);
+        }
+        
+        /* Couleurs professionnelles basées sur le vert Nasurlex */
+        .text-primary { color: #059669; }
+        .text-secondary { color: #475569; }
+        .text-muted { color: #64748b; }
+        
+        .bg-primary { background-color: #059669; }
+        .bg-primary-light { background-color: #d1fae5; }
+        .bg-secondary-light { background-color: #f8fafc; }
+        
+        .border-primary { border-color: #059669; }
+        .border-light { border-color: #e2e8f0; }
+        
+        /* Animation subtile */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        /* Effet de profondeur léger */
+        .depth-effect-light {
+            box-shadow: 
+                0 2px 4px rgba(0, 0, 0, 0.05),
+                0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Badge vert */
+        .badge-primary {
+            background-color: #d1fae5;
+            color: #065f46;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body class="light-bg">
+    <!-- Topbar Claire et Professionnelle -->
+    <header class="bg-white border-b border-light sticky top-0 z-40 depth-effect-light">
+        <div class="flex items-center justify-between h-16 px-6">
+            <!-- Logo et Nom -->
+            <div class="flex items-center space-x-4">
+                <a href="/" class="flex items-center">
+                    <img style="width:140px" src="{{asset('assets/img/Nasurlex-logo.png')}}" alt="Nasurlex" class="rounded-xl">
+                </a>
+                <div class="hidden md:block">
+                    <h1 class="text-primary text-lg font-bold">Tableau de Bord</h1>
+                    <p class="text-secondary text-sm">Bienvenue, {{ app.user.prenom }} </p>
+                </div>
+            </div>
+
+            <!-- Navigation Principale -->
+            <nav class="hidden lg:flex items-center space-x-1">
+                <a href="{{path('admin')}}" class="px-4 py-2 text-secondary hover:text-primary hover:bg-primary-light rounded-lg transition-all duration-300 font-semibold">
+                    <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                </a>
+                
+                {% if app.user.role == "ROLE_ADMIN" %}
+                <a href="{{path('addDoc')}}" class="px-4 py-2 text-secondary hover:text-primary hover:bg-primary-light rounded-lg transition-all duration-300">
+                    <i class="fas fa-file-upload mr-2"></i>Documents
+                </a>
+                <a href="{{path('Pack')}}" class="px-4 py-2 text-secondary hover:text-primary hover:bg-primary-light rounded-lg transition-all duration-300">
+                    <i class="fas fa-cubes mr-2"></i>Packs
+                </a>
+                <a href="{{path('passe')}}" class="px-4 py-2 text-secondary hover:text-primary hover:bg-primary-light rounded-lg transition-all duration-300">
+                    <i class="fas fa-shield-alt mr-2"></i>Sécurité
+                </a>
+                {% else %}
+                <a href="{{path('abonnement')}}" class="px-4 py-2 text-secondary hover:text-primary hover:bg-primary-light rounded-lg transition-all duration-300">
+                    <i class="fas fa-rocket mr-2"></i>Abonnements
+                </a>
+                <a href="{{path('passe')}}" class="px-4 py-2 text-secondary hover:text-primary hover:bg-primary-light rounded-lg transition-all duration-300">
+                    <i class="fas fa-lock mr-2"></i>Mot de passe
+                </a>
+                {% endif %}
+            </nav>
+
+            <!-- User Menu et Actions -->
+            <div class="flex items-center space-x-3">
+                <!-- Notifications -->
+                <div class="relative">
+                    <button class="w-9 h-9 bg-secondary-light hover:bg-primary-light rounded-lg flex items-center justify-center text-secondary hover:text-primary transition-all duration-300 depth-effect-light">
+                        <i class="fas fa-bell"></i>
+                        <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-xs flex items-center justify-center text-white">3</span>
+                    </button>
+                </div>
+
+                <!-- User Menu -->
+                <div class="relative">
+                    <button class="flex items-center space-x-3 focus:outline-none group" id="userMenuButton">
+                        <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300">
+                            <span class="text-white font-bold text-sm">{{ app.user.prenom[:1]|upper }}</span>
+                        </div>
+                        <div class="hidden md:block text-left">
+                            <p class="font-semibold text-secondary text-sm">{{ app.user.prenom }} </p>
+                            <p class="text-muted text-xs">
+                                {{ app.user.role == "ROLE_ADMIN" ? "Administrateur" : "Utilisateur" }}
+                            </p>
+                        </div>
+                        <i class="fas fa-chevron-down text-xs text-muted group-hover:text-primary group-hover:rotate-180 transition-transform"></i>
+                    </button>
+                    
+                    <!-- Dropdown menu -->
+                    <div class="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-light py-2 hidden z-50 depth-effect-light" id="userDropdown">
+                        <div class="px-4 py-2 border-b border-light">
+                            <p class="text-secondary font-semibold text-sm">{{ app.user.prenom }}</p>
+                            <p class="text-muted text-xs">{{ app.user.email }}</p>
+                        </div>
+                        
+                        <a href="#" class="flex items-center px-4 py-2 text-secondary hover:text-primary hover:bg-primary-light transition-colors text-sm">
+                            <i class="fas fa-user mr-3 text-muted"></i>Mon Profil
+                        </a>
+                        <a href="{{path('passe')}}" class="flex items-center px-4 py-2 text-secondary hover:text-primary hover:bg-primary-light transition-colors text-sm">
+                            <i class="fas fa-lock mr-3 text-muted"></i>Mot de passe
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-2 text-secondary hover:text-primary hover:bg-primary-light transition-colors text-sm">
+                            <i class="fas fa-cog mr-3 text-muted"></i>Paramètres
+                        </a>
+                        
+                        <div class="border-t border-light my-1"></div>
+                        
+                        <a href="{{path('logout')}}" class="flex items-center px-4 py-2 text-red-600 hover:bg-red-50 transition-colors text-sm">
+                            <i class="fas fa-sign-out-alt mr-3"></i>Déconnexion
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Menu Mobile -->
+                <button class="lg:hidden w-9 h-9 bg-secondary-light hover:bg-primary-light rounded-lg flex items-center justify-center text-secondary hover:text-primary transition-all duration-300 depth-effect-light" id="mobileMenuButton">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Menu Mobile -->
+        <div class="lg:hidden bg-white border-t border-light p-4 hidden depth-effect-light" id="mobileMenu">
+            <div class="grid grid-cols-2 gap-2">
+                <a href="{{path('admin')}}" class="flex items-center justify-center px-4 py-3 text-secondary hover:text-primary hover:bg-primary-light rounded-lg transition-all text-sm depth-effect-light">
+                    <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                </a>
+                
+                {% if app.user.role == "ROLE_ADMIN" %}
+                <a href="{{path('addDoc')}}" class="flex items-center justify-center px-4 py-3 text-secondary hover:text-primary hover:bg-primary-light rounded-lg transition-all text-sm depth-effect-light">
+                    <i class="fas fa-file-upload mr-2"></i>Documents
+                </a>
+                <a href="{{path('Pack')}}" class="flex items-center justify-center px-4 py-3 text-secondary hover:text-primary hover:bg-primary-light rounded-lg transition-all text-sm depth-effect-light">
+                    <i class="fas fa-cubes mr-2"></i>Packs
+                </a>
+                <a href="{{path('passe')}}" class="flex items-center justify-center px-4 py-3 text-secondary hover:text-primary hover:bg-primary-light rounded-lg transition-all text-sm depth-effect-light">
+                    <i class="fas fa-shield-alt mr-2"></i>Sécurité
+                </a>
+                {% else %}
+                <a href="{{path('abonnement')}}" class="flex items-center justify-center px-4 py-3 text-secondary hover:text-primary hover:bg-primary-light rounded-lg transition-all text-sm depth-effect-light">
+                    <i class="fas fa-rocket mr-2"></i>Abonnements
+                </a>
+                <a href="{{path('passe')}}" class="flex items-center justify-center px-4 py-3 text-secondary hover:text-primary hover:bg-primary-light rounded-lg transition-all text-sm depth-effect-light">
+                    <i class="fas fa-lock mr-2"></i>Mot de passe
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-6 fade-in">
+        {% block body %}{% endblock %}
+    </main>
+
+    <!-- Footer Professionnel -->
+    <footer class="bg-white border-t border-light mt-12 depth-effect-light">
+        <div class="container mx-auto px-6 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-3 mb-4 md:mb-0">
+                    <img style="width:90px" src="{{asset('assets/img/Nasurlex-logo.png')}}" alt="Nasurlex" class="rounded-lg">
+                    <div class="text-secondary">
+                        <p class="font-semibold text-sm">Nasurlex Platform</p>
+                        <p class="text-muted text-xs">Votre solution documentaire professionnelle</p>
+                    </div>
+                </div>
+                
+                <div class="flex space-x-4">
+                    <a href="#" class="text-muted hover:text-primary transition-colors">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-muted hover:text-primary transition-colors">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="#" class="text-muted hover:text-primary transition-colors">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="#" class="text-muted hover:text-primary transition-colors">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t border-light mt-4 pt-4 text-center">
+                <p class="text-muted text-xs">
+                    &copy; 2024 Nasurlex. Tous droits réservés. 
+                    <span class="mx-2">•</span>
+                    Fait avec <i class="fas fa-heart text-red-400 mx-1"></i> pour la communauté
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // User dropdown functionality
+        document.getElementById('userMenuButton').addEventListener('click', function() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('hidden');
+        });
+
+        // Mobile menu functionality
+        document.getElementById('mobileMenuButton').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            const userMenuButton = document.getElementById('userMenuButton');
+            const userDropdown = document.getElementById('userDropdown');
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            if (!userMenuButton.contains(event.target) && !userDropdown.contains(event.target)) {
+                userDropdown.classList.add('hidden');
+            }
+            
+            if (!mobileMenuButton.contains(event.target) && !mobileMenu.contains(event.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+
+        // Chatra initialization
+        (function(d, w, c) {
+            w.ChatraID = 'MqT9xme48HoAnWiKx';
+            var s = d.createElement('script');
+            w[c] = w[c] || function() {
+                (w[c].q = w[c].q || []).push(arguments);
+            };
+            s.async = true;
+            s.src = 'https://call.chatra.io/chatra.js';
+            if (d.head) d.head.appendChild(s);
+        })(document, window, 'Chatra');
+
+        // Ajouter une classe active à la navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('nav a');
+            
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('bg-primary-light', 'text-primary');
+                }
+            });
+        });
+    </script>
+
+    <!-- Additional scripts from original template -->
+    <script src="{{asset('assets/vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{asset('assets/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
+
+</body>
+</html>

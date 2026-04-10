@@ -1,0 +1,634 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<!-- Recherche Avancée Section -->
+<section class="min-h-screen relative py-20 overflow-hidden bg-gradient-to-br from-dark-900 via-primary-900 to-dark-800">
+    <!-- Background Animations -->
+    <div class="absolute inset-0">
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500 rounded-full opacity-20 blur-3xl animate-float"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent-500 rounded-full opacity-30 blur-3xl animate-float" style="animation-delay: 2s;"></div>
+    </div>
+
+    <div class="container mx-auto px-4 relative z-10">
+        <!-- En-tête -->
+        <div class="text-center mb-8" data-aos="fade-down">
+            <div class="inline-flex items-center px-6 py-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-6">
+                <span class="w-2 h-2 bg-primary-400 rounded-full mr-3 animate-pulse"></span>
+                <span class="text-white font-semibold text-sm">RECHERCHE AVANCÉE</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-black text-white mb-6">
+                Explorez nos <span class="text-gradient">documents</span>
+            </h1>
+            <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+                Trouvez rapidement les textes législatifs et réglementaires dont vous avez besoin
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+            <!-- Sidebar Filtres -->
+            <div class="lg:col-span-1" data-aos="fade-right">
+                <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-white/20 sticky top-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 bg-primary-500/20 rounded-2xl flex items-center justify-center mr-4">
+                            <i class="fas fa-filter text-primary-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Filtres de recherche</h3>
+                    </div>
+
+                    <form method="post" class="space-y-6">
+                        <!-- Mots clés -->
+                        <div>
+                            <label class="block text-white font-semibold mb-3">Mots clés</label>
+                            <div class="relative">
+                                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                <input type="text" name="search" value="{{ mots }}" 
+                                       class="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
+                                       placeholder="Entrez vos mots clés...">
+                            </div>
+                        </div>
+
+                        <!-- Catégorie -->
+                        <div>
+                            <label class="block text-white font-semibold mb-3">Catégorie</label>
+                            <div class="relative">
+                                <select name="categorie" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent appearance-none transition-all duration-300">
+                                    <option value='' selected>Toutes les catégories</option>
+                                    {% for cat in categories %}
+                                    <option value="{{ cat.id }}" {{ app.request.request.get('categorie') == cat.id ? 'selected' : '' }}>
+                                        {{ cat.libelle }}
+                                    </option>
+                                    {% for sousCat in cat.sousCategorie %}
+                                    <option value="{{ cat.id }}-{{ sousCat.id }}" {{ app.request.request.get('categorie') == cat.id ~ '-' ~ sousCat.id ? 'selected' : '' }}>
+                                        {{ cat.libelle }} › {{ sousCat.libelle }}
+                                    </option>
+                                    {% endfor %}
+                                    {% endfor %}
+                                </select>
+                                <i class="fas fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                            </div>
+                        </div>
+
+                        <!-- Date de publication -->
+                        <div>
+                            <label class="block text-white font-semibold mb-3">Date de publication</label>
+                            <input type="date" value="{{ datepub }}" name="datepub" 
+                                   class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300">
+                        </div>
+
+                        <!-- Boutons -->
+                        <div class="space-y-3">
+                            <button type="submit" class="w-full bg-gradient-to-r from-primary-500 to-accent-500 text-white py-3 rounded-2xl font-bold hover:from-primary-600 hover:to-accent-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group">
+                                <span class="flex items-center justify-center">
+                                    <i class="fas fa-search mr-2 group-hover:scale-110 transition-transform"></i>
+                                    Lancer la recherche
+                                </span>
+                            </button>
+                            
+                            <button type="button" onclick="resetFilters()" class="w-full bg-gray-600/50 text-white py-3 rounded-2xl font-bold hover:bg-gray-700/50 transition-all duration-300 group">
+                                <span class="flex items-center justify-center">
+                                    <i class="fas fa-redo mr-2 group-hover:rotate-180 transition-transform"></i>
+                                    Réinitialiser
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Résultats -->
+            <div class="lg:col-span-3" data-aos="fade-left">
+                <!-- En-tête Résultats -->
+                <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-6 mb-6 border border-white/20">
+                    <div class="flex flex-col md:flex-row justify-between items-center">
+                        <div>
+                            <h2 class="text-2xl font-bold text-white mb-2">
+                                <i class="fas fa-file-alt mr-2"></i>
+                                Résultats de recherche
+                            </h2>
+                            <p class="text-gray-300">
+                                {% if mots %}
+                                Pour le(s) mot(s) clé(s) <span class="text-primary-300 font-semibold">'{{ mots }}'</span>
+                                {% else %}
+                                Recherche sans mots clés spécifiques
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="mt-4 md:mt-0">
+                            <div class="bg-primary-500/20 px-4 py-2 rounded-full">
+                                <span class="text-primary-300 font-semibold" id="result-count">
+                                    {{ juri|length + fiscal|length + affaires|length + social|length + foncier|length + banque|length + assurance|length }} document(s) trouvé(s)
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if empty == true %}
+                <!-- Aucun résultat -->
+                <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-12 text-center border border-white/20">
+                    <div class="w-24 h-24 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-search text-3xl text-gray-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Aucun résultat trouvé</h3>
+                    <p class="text-gray-300 mb-6">
+                        Aucun document ne correspond à vos critères de recherche. Essayez d'autres mots clés ou modifiez vos filtres.
+                    </p>
+                    <button onclick="resetFilters()" class="bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-2xl font-semibold transition-colors duration-300 transform hover:scale-105">
+                        <i class="fas fa-redo mr-2"></i>
+                        Réinitialiser les filtres
+                    </button>
+                </div>
+                {% else %}
+                <!-- Résultats par Catégorie -->
+                <div class="space-y-6" id="search-results">
+                    
+                    {% if juri and res %}
+                    <!-- Catégorie Juridique -->
+                    <div class="bg-white/10 backdrop-blur-sm rounded-3xl overflow-hidden border border-white/20 transition-all duration-300 hover:border-primary-500/50 category-card">
+                        <div class="bg-primary-600/30 p-6 border-l-4 border-primary-400">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 bg-primary-500/20 rounded-2xl flex items-center justify-center mr-4">
+                                        <img src="{{asset('assets/img/juridique.svg')}}" alt="Juridique" class="h-6 filter brightness-0 invert">
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-white">Juridique</h3>
+                                        <p class="text-gray-300">{{ juri|length }} document(s)</p>
+                                    </div>
+                                </div>
+                                <button class="text-primary-300 hover:text-primary-200 transition-colors duration-300 category-toggle transform hover:scale-110">
+                                    <i class="fas fa-chevron-down text-lg transition-transform duration-300"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="category-content transition-all duration-500 ease-in-out">
+                            {% for key, res in res %}
+                            <div class="p-6 border-b border-white/10 last:border-b-0">
+                                <!-- Sous-catégorie -->
+                                <div class="flex items-center justify-between mb-4 p-4 bg-white/5 rounded-2xl">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-primary-500/20 rounded-full flex items-center justify-center mr-3">
+                                            <i class="fas fa-folder text-primary-400 text-sm"></i>
+                                        </div>
+                                        <h4 class="text-lg font-semibold text-white">{{ res[0].souscat.libelle }}</h4>
+                                    </div>
+                                    <span class="bg-primary-500/20 text-primary-300 px-3 py-1 rounded-full text-sm font-semibold">
+                                        {{ res|length }} doc(s)
+                                    </span>
+                                </div>
+
+                                <!-- Documents -->
+                                <div class="space-y-4">
+                                    {% for docs in res %}
+                                    <div class="bg-white/5 rounded-2xl p-4 hover:bg-white/10 transition-all duration-300 group document-card border border-white/10 hover:border-white/20 transform hover:-translate-y-1">
+                                        <div class="flex items-start justify-between">
+                                            <div class="flex-1">
+                                                <div class="flex items-center mb-2">
+                                                    <span class="bg-primary-500 text-white text-xs px-2 py-1 rounded-full mr-3">
+                                                        {{ res[0].souscat.libelle|slice(0,4) }}
+                                                    </span>
+                                                    <h5 class="text-white font-semibold text-lg">{{ docs.description }}</h5>
+                                                </div>
+                                                <p class="text-gray-300 text-sm mb-3">
+                                                    {{ res[0].souscat.libelle }} : 
+                                                    <span class="search-highlight">
+                                                        {{ docs.description }}
+                                                    </span>
+                                                </p>
+                                                <div class="flex flex-wrap items-center gap-2">
+                                                    {% if docs.natures.libelle == "En vigueur" %}
+                                                    <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-xs font-semibold flex items-center">
+                                                        <i class="fas fa-check-circle mr-1"></i> En vigueur
+                                                    </span>
+                                                    {% elseif docs.natures.libelle == "Abrogé partiellement" %}
+                                                    <span class="bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full text-xs font-semibold flex items-center">
+                                                        <i class="fas fa-exclamation-triangle mr-1"></i> Abrogé partiellement
+                                                    </span>
+                                                    {% else %}
+                                                    <span class="bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-xs font-semibold flex items-center">
+                                                        <i class="fas fa-times-circle mr-1"></i> {{ docs.natures.libelle }}
+                                                    </span>
+                                                    {% endif %}
+                                                    <span class="text-gray-400 text-xs flex items-center">
+                                                        <i class="far fa-calendar mr-1"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center space-x-2 ml-4">
+                                                <a href="{{path('render',{id:docs.id})}}" 
+                                                   class="w-10 h-10 bg-green-500/20 hover:bg-green-500/30 rounded-2xl flex items-center justify-center text-green-400 hover:text-green-300 transition-all duration-300 group/btn transform hover:scale-110"
+                                                   title="Voir le document">
+                                                    <i class="fas fa-book group-hover/btn:scale-110 transition-transform"></i>
+                                                </a>
+                                                {% if app.user and app.user.role == "ROLE_ADMIN" %}
+                                                <a href="{{path('editDoc',{id:docs.id})}}" 
+                                                   class="w-10 h-10 bg-blue-500/20 hover:bg-blue-500/30 rounded-2xl flex items-center justify-center text-blue-400 hover:text-blue-300 transition-all duration-300 group/btn transform hover:scale-110"
+                                                   title="Modifier">
+                                                    <i class="fas fa-edit group-hover/btn:scale-110 transition-transform"></i>
+                                                </a>
+                                                <a onclick="return confirm('Voulez-vous vraiment supprimer ce document ?')" 
+                                                   href="{{path('removeDoc',{id:docs.id})}}" 
+                                                   class="w-10 h-10 bg-red-500/20 hover:bg-red-500/30 rounded-2xl flex items-center justify-center text-red-400 hover:text-red-300 transition-all duration-300 group/btn transform hover:scale-110"
+                                                   title="Supprimer">
+                                                    <i class="fas fa-trash group-hover/btn:scale-110 transition-transform"></i>
+                                                </a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if fiscal and fis %}
+                    <!-- Catégorie Fiscal -->
+                    <div class="bg-white/10 backdrop-blur-sm rounded-3xl overflow-hidden border border-white/20 transition-all duration-300 hover:border-purple-500/50 category-card">
+                        <div class="bg-purple-600/30 p-6 border-l-4 border-purple-400">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 bg-purple-500/20 rounded-2xl flex items-center justify-center mr-4">
+                                        <img src="{{asset('assets/img/Fiscal.svg')}}" alt="Fiscal" class="h-6 filter brightness-0 invert">
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-white">Fiscal</h3>
+                                        <p class="text-gray-300">{{ fiscal|length }} document(s)</p>
+                                    </div>
+                                </div>
+                                <button class="text-purple-300 hover:text-purple-200 transition-colors duration-300 category-toggle transform hover:scale-110">
+                                    <i class="fas fa-chevron-down text-lg transition-transform duration-300"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="category-content transition-all duration-500 ease-in-out">
+                            {% for key, res in fis %}
+                            <div class="p-6 border-b border-white/10 last:border-b-0">
+                                <!-- Sous-catégorie -->
+                                <div class="flex items-center justify-between mb-4 p-4 bg-white/5 rounded-2xl">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center mr-3">
+                                            <i class="fas fa-folder text-purple-400 text-sm"></i>
+                                        </div>
+                                        <h4 class="text-lg font-semibold text-white">{{ res[0].souscat.libelle }}</h4>
+                                    </div>
+                                    <span class="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full text-sm font-semibold">
+                                        {{ res|length }} doc(s)
+                                    </span>
+                                </div>
+
+                                <!-- Documents -->
+                                <div class="space-y-4">
+                                    {% for docs in res %}
+                                    <div class="bg-white/5 rounded-2xl p-4 hover:bg-white/10 transition-all duration-300 group document-card border border-white/10 hover:border-white/20 transform hover:-translate-y-1">
+                                        <div class="flex items-start justify-between">
+                                            <div class="flex-1">
+                                                <div class="flex items-center mb-2">
+                                                    <span class="bg-purple-500 text-white text-xs px-2 py-1 rounded-full mr-3">
+                                                        {{ res[0].souscat.libelle|slice(0,4) }}
+                                                    </span>
+                                                    <h5 class="text-white font-semibold text-lg">{{ docs.description }}</h5>
+                                                </div>
+                                                <p class="text-gray-300 text-sm mb-3">
+                                                    {{ res[0].souscat.libelle }} : 
+                                                    <span class="search-highlight">
+                                                        {{ docs.description }}
+                                                    </span>
+                                                </p>
+                                                <div class="flex flex-wrap items-center gap-2">
+                                                    {% if docs.natures.libelle == "En vigueur" %}
+                                                    <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-xs font-semibold flex items-center">
+                                                        <i class="fas fa-check-circle mr-1"></i> En vigueur
+                                                    </span>
+                                                    {% elseif docs.natures.libelle == "Abrogé partiellement" %}
+                                                    <span class="bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full text-xs font-semibold flex items-center">
+                                                        <i class="fas fa-exclamation-triangle mr-1"></i> Abrogé partiellement
+                                                    </span>
+                                                    {% else %}
+                                                    <span class="bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-xs font-semibold flex items-center">
+                                                        <i class="fas fa-times-circle mr-1"></i> {{ docs.natures.libelle }}
+                                                    </span>
+                                                    {% endif %}
+                                                    <span class="text-gray-400 text-xs flex items-center">
+                                                        <i class="far fa-calendar mr-1"></i> VarDate
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center space-x-2 ml-4">
+                                                <a href="{{path('render',{id:docs.id})}}" 
+                                                   class="w-10 h-10 bg-green-500/20 hover:bg-green-500/30 rounded-2xl flex items-center justify-center text-green-400 hover:text-green-300 transition-all duration-300 group/btn transform hover:scale-110"
+                                                   title="Voir le document">
+                                                    <i class="fas fa-book group-hover/btn:scale-110 transition-transform"></i>
+                                                </a>
+                                                {% if app.user and app.user.role == "ROLE_ADMIN" %}
+                                                <a href="{{path('editDoc',{id:docs.id})}}" 
+                                                   class="w-10 h-10 bg-blue-500/20 hover:bg-blue-500/30 rounded-2xl flex items-center justify-center text-blue-400 hover:text-blue-300 transition-all duration-300 group/btn transform hover:scale-110"
+                                                   title="Modifier">
+                                                    <i class="fas fa-edit group-hover/btn:scale-110 transition-transform"></i>
+                                                </a>
+                                                <a onclick="return confirm('Voulez-vous vraiment supprimer ce document ?')" 
+                                                   href="{{path('removeDoc',{id:docs.id})}}" 
+                                                   class="w-10 h-10 bg-red-500/20 hover:bg-red-500/30 rounded-2xl flex items-center justify-center text-red-400 hover:text-red-300 transition-all duration-300 group/btn transform hover:scale-110"
+                                                   title="Supprimer">
+                                                    <i class="fas fa-trash group-hover/btn:scale-110 transition-transform"></i>
+                                                </a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if affaires and aff %}
+                    <!-- Catégorie Affaires -->
+                    <div class="bg-white/10 backdrop-blur-sm rounded-3xl overflow-hidden border border-white/20 transition-all duration-300 hover:border-yellow-500/50 category-card">
+                        <div class="bg-yellow-600/30 p-6 border-l-4 border-yellow-400">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 bg-yellow-500/20 rounded-2xl flex items-center justify-center mr-4">
+                                        <img src="{{asset('assets/img/Affaire.svg')}}" alt="Affaires" class="h-6 filter brightness-0 invert">
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-white">Affaires</h3>
+                                        <p class="text-gray-300">{{ affaires|length }} document(s)</p>
+                                    </div>
+                                </div>
+                                <button class="text-yellow-300 hover:text-yellow-200 transition-colors duration-300 category-toggle transform hover:scale-110">
+                                    <i class="fas fa-chevron-down text-lg transition-transform duration-300"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="category-content transition-all duration-500 ease-in-out">
+                            {% for key, res in aff %}
+                            <div class="p-6 border-b border-white/10 last:border-b-0">
+                                <!-- Sous-catégorie -->
+                                <div class="flex items-center justify-between mb-4 p-4 bg-white/5 rounded-2xl">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-yellow-500/20 rounded-full flex items-center justify-center mr-3">
+                                            <i class="fas fa-folder text-yellow-400 text-sm"></i>
+                                        </div>
+                                        <h4 class="text-lg font-semibold text-white">{{ res[0].souscat.libelle }}</h4>
+                                    </div>
+                                    <span class="bg-yellow-500/20 text-yellow-300 px-3 py-1 rounded-full text-sm font-semibold">
+                                        {{ res|length }} doc(s)
+                                    </span>
+                                </div>
+
+                                <!-- Documents -->
+                                <div class="space-y-4">
+                                    {% for docs in res %}
+                                    <div class="bg-white/5 rounded-2xl p-4 hover:bg-white/10 transition-all duration-300 group document-card border border-white/10 hover:border-white/20 transform hover:-translate-y-1">
+                                        <div class="flex items-start justify-between">
+                                            <div class="flex-1">
+                                                <div class="flex items-center mb-2">
+                                                    <span class="bg-yellow-500 text-white text-xs px-2 py-1 rounded-full mr-3">
+                                                        {{ res[0].souscat.libelle|slice(0,4) }}
+                                                    </span>
+                                                    <h5 class="text-white font-semibold text-lg">{{ docs.description }}</h5>
+                                                </div>
+                                                <p class="text-gray-300 text-sm mb-3">
+                                                    {{ res[0].souscat.libelle }} : 
+                                                    <span class="search-highlight">
+                                                        {{ docs.description }}
+                                                    </span>
+                                                </p>
+                                                <div class="flex flex-wrap items-center gap-2">
+                                                    {% if docs.natures.libelle == "En vigueur" %}
+                                                    <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-xs font-semibold flex items-center">
+                                                        <i class="fas fa-check-circle mr-1"></i> En vigueur
+                                                    </span>
+                                                    {% elseif docs.natures.libelle == "Abrogé partiellement" %}
+                                                    <span class="bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full text-xs font-semibold flex items-center">
+                                                        <i class="fas fa-exclamation-triangle mr-1"></i> Abrogé partiellement
+                                                    </span>
+                                                    {% else %}
+                                                    <span class="bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-xs font-semibold flex items-center">
+                                                        <i class="fas fa-times-circle mr-1"></i> {{ docs.natures.libelle }}
+                                                    </span>
+                                                    {% endif %}
+                                                    <span class="text-gray-400 text-xs flex items-center">
+                                                        <i class="far fa-calendar mr-1"></i> {{ docs.datePublication|date('d/m/Y') }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center space-x-2 ml-4">
+                                                <a href="{{path('render',{id:docs.id})}}" 
+                                                   class="w-10 h-10 bg-green-500/20 hover:bg-green-500/30 rounded-2xl flex items-center justify-center text-green-400 hover:text-green-300 transition-all duration-300 group/btn transform hover:scale-110"
+                                                   title="Voir le document">
+                                                    <i class="fas fa-book group-hover/btn:scale-110 transition-transform"></i>
+                                                </a>
+                                                {% if app.user and app.user.role == "ROLE_ADMIN" %}
+                                                <a href="{{path('editDoc',{id:docs.id})}}" 
+                                                   class="w-10 h-10 bg-blue-500/20 hover:bg-blue-500/30 rounded-2xl flex items-center justify-center text-blue-400 hover:text-blue-300 transition-all duration-300 group/btn transform hover:scale-110"
+                                                   title="Modifier">
+                                                    <i class="fas fa-edit group-hover/btn:scale-110 transition-transform"></i>
+                                                </a>
+                                                <a onclick="return confirm('Voulez-vous vraiment supprimer ce document ?')" 
+                                                   href="{{path('removeDoc',{id:docs.id})}}" 
+                                                   class="w-10 h-10 bg-red-500/20 hover:bg-red-500/30 rounded-2xl flex items-center justify-center text-red-400 hover:text-red-300 transition-all duration-300 group/btn transform hover:scale-110"
+                                                   title="Supprimer">
+                                                    <i class="fas fa-trash group-hover/btn:scale-110 transition-transform"></i>
+                                                </a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Ajouter les autres catégories ici avec le même pattern -->
+
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+// Fonction pour highlight les mots de recherche
+function highlightSearchTerms() {
+    const searchTerm = "{{ mots|lower }}";
+    if (!searchTerm || searchTerm.trim() === '') return;
+
+    const searchWords = searchTerm.split(' ').filter(word => word.length > 2);
+    const highlightElements = document.querySelectorAll('.search-highlight');
+
+    highlightElements.forEach(element => {
+        let text = element.textContent;
+        let originalText = text;
+        
+        searchWords.forEach(word => {
+            if (word.length > 2) {
+                const regex = new RegExp(`(${word})`, 'gi');
+                text = text.replace(regex, '<mark class="bg-yellow-500 text-yellow-900 px-1 rounded animate-pulse">$1</mark>');
+            }
+        });
+        
+        // Only update if changes were made
+        if (text !== originalText) {
+            element.innerHTML = text;
+        }
+    });
+}
+
+// Fonction pour gérer les catégories pliables
+function initCategoryToggles() {
+    document.querySelectorAll('.category-toggle').forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            const categoryCard = this.closest('.category-card');
+            const content = categoryCard.querySelector('.category-content');
+            const icon = this.querySelector('i');
+
+            if (content.classList.contains('max-h-0')) {
+                // Ouvrir
+                content.classList.remove('max-h-0', 'opacity-0', 'overflow-hidden');
+                content.classList.add('max-h-[5000px]', 'opacity-100');
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            } else {
+                // Fermer
+                content.classList.remove('max-h-[5000px]', 'opacity-100');
+                content.classList.add('max-h-0', 'opacity-0', 'overflow-hidden');
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            }
+        });
+    });
+
+    // Ouvrir toutes les catégories par défaut
+    document.querySelectorAll('.category-content').forEach(content => {
+        content.classList.remove('max-h-0', 'opacity-0', 'overflow-hidden');
+        content.classList.add('max-h-[5000px]', 'opacity-100');
+    });
+}
+
+// Fonction pour réinitialiser les filtres
+function resetFilters() {
+    document.querySelector('form').reset();
+    document.querySelector('input[name="search"]').focus();
+}
+
+// Animation des résultats au scroll
+function initScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.remove('opacity-0', 'translate-y-8');
+                entry.target.classList.add('opacity-100', 'translate-y-0');
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.document-card').forEach((el, index) => {
+        el.classList.add('opacity-0', 'translate-y-8', 'transition-all', 'duration-500', 'ease-out');
+        el.style.transitionDelay = (index * 0.1) + 's';
+        observer.observe(el);
+    });
+}
+
+// Compteur animé pour les résultats
+function animateResultCount() {
+    const resultCount = document.getElementById('result-count');
+    if (resultCount) {
+        const total = parseInt("{{ juri|length + fiscal|length + affaires|length + social|length + foncier|length + banque|length + assurance|length }}");
+        let current = 0;
+        const duration = 1500;
+        const increment = total / (duration / 16);
+        
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= total) {
+                current = total;
+                clearInterval(timer);
+            }
+            resultCount.textContent = Math.floor(current) + ' document(s) trouvé(s)';
+        }, 16);
+    }
+}
+
+// Initialisation au chargement de la page
+document.addEventListener('DOMContentLoaded', function() {
+    highlightSearchTerms();
+    initCategoryToggles();
+    initScrollAnimations();
+    animateResultCount();
+
+    // Amélioration des interactions
+    document.querySelectorAll('.document-card').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.classList.add('shadow-2xl', 'scale-105');
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.classList.remove('shadow-2xl', 'scale-105');
+        });
+    });
+
+    // Gestion du formulaire de recherche
+    const searchForm = document.querySelector('form');
+    searchForm.addEventListener('submit', function(e) {
+        const searchInput = this.querySelector('input[name="search"]');
+        if (!searchInput.value.trim() && !this.querySelector('select[name="categorie"]').value && !this.querySelector('input[name="datepub"]').value) {
+            e.preventDefault();
+            // Animation de shake sur le formulaire
+            this.classList.add('animate-pulse');
+            setTimeout(() => {
+                this.classList.remove('animate-pulse');
+            }, 1000);
+            
+            // Focus sur le champ de recherche
+            searchInput.focus();
+        }
+    });
+
+    // Auto-focus sur le champ de recherche
+    const searchInput = document.querySelector('input[name="search"]');
+    if (searchInput && !searchInput.value) {
+        setTimeout(() => {
+            searchInput.focus();
+        }, 500);
+    }
+});
+
+// Gestion des erreurs de chargement d'images
+document.addEventListener('error', function(e) {
+    if (e.target.tagName === 'IMG') {
+        e.target.style.display = 'none';
+        const parent = e.target.parentElement;
+        if (parent) {
+            const icon = document.createElement('i');
+            icon.className = 'fas fa-file text-white text-lg';
+            parent.appendChild(icon);
+        }
+    }
+}, true);
+
+// Amélioration de l'accessibilité
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        document.activeElement.blur();
+    }
+});
+</script>
+{% endblock %}

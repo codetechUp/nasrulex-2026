@@ -1,0 +1,15 @@
+{% extends 'admin.html.twig' %} {% block body %}
+<div class="mt-5">
+    <div class="container">
+        {{ form_start(form) }}
+        {{ form_row(form.libelle,{ "attr":{"label":"Nom du Packs"}}) }}
+        {{ form_row(form.reduction,{ "attr":{"label":"Prix"}} ) }}
+        {{ form_row(form.price,{ "attr":{"label":"Réduction en %"}} ) }}
+        {{ form_row(form.categories,{ "attr":{"label":" Selectionner les categories"}}) }}
+        
+                       
+                        {{ form_row(form.save) }}
+                        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}

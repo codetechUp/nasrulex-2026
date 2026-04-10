@@ -1,0 +1,319 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <!-- Hero Section Époustouflante -->
+    <section class="min-h-screen relative flex items-center justify-center overflow-hidden py-20">
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-6xl mx-auto text-center">
+                <!-- Badge Animé -->
+                <div class="inline-flex items-center px-6 py-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-8 animate-fade-in" data-aos="fade-down">
+                    <span class="w-2 h-2 bg-primary-400 rounded-full mr-3 animate-pulse"></span>
+                    <span class="text-white font-semibold text-sm">PLATEFORME DOCUMENTAIRE INTELLIGENTE</span>
+                </div>
+                
+                <!-- Titre Principal -->
+                <h1 class="text-5xl md:text-7xl font-black text-white mb-8 leading-tight" data-aos="fade-up" data-aos-delay="200">
+                    <span class="text-gradient">L'intelligence</span><br>
+                    <span class="text-white">juridique à portée de main</span>
+                </h1>
+                
+                <!-- Sous-titre -->
+                <p class="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed" data-aos="fade-up" data-aos-delay="400">
+                    Accédez instantanément à l'ensemble des textes législatifs, réglementaires et de la doctrine fiscale du Sénégal
+                </p>
+                
+                <!-- Search Bar Évoluée -->
+                <div class="max-w-4xl mx-auto mb-12" data-aos="fade-up" data-aos-delay="600">
+                    <form action="{{path('recherche')}}" method="post" class="relative">
+                        <div class="flex flex-col lg:flex-row gap-4 bg-white/10 backdrop-blur-md rounded-2xl p-2 border border-white/20">
+                            <div class="flex-1">
+                                <div class="relative">
+                                    <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                    <input type="search" name="search" class="w-full pl-12 pr-4 py-4 bg-transparent text-white placeholder-gray-300 border-none focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="Rechercher par mots-clés, thèmes, références...">
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <select name="categorie" class="w-full px-4 py-4 bg-transparent text-white border-none focus:outline-none focus:ring-0 appearance-none">
+                                    <option value='' class="text-gray-800" selected>Toutes les catégories</option>
+                                    {% for cat in categories %}
+                                    <option value="{{ cat.id }}" class="text-gray-800"><b>{{ cat.libelle }}</b></option>
+                                    {% for sousCat in cat.sousCategorie %}
+                                    <option value="{{ cat.id }}-{{ sousCat.id }}" class="text-gray-800"><b>{{ cat.libelle }}</b> › {{ sousCat.libelle }}</option>
+                                    {% endfor %}
+                                    {% endfor %}
+                                </select>
+                                <i class="fas fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                            </div>
+                            <button type="submit" class="bg-gradient-to-r from-primary-500 to-accent-500 text-white px-8 py-4 rounded-xl font-semibold hover:from-primary-600 hover:to-accent-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center min-w-[140px]">
+                                <i class="fas fa-bolt mr-2"></i>
+                                Rechercher
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- CTA Secondaire -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center" data-aos="fade-up" data-aos-delay="800">
+                    <a href="/recherche" class="group flex items-center text-white font-semibold hover:text-primary-300 transition-colors">
+                        <i class="fas fa-sliders-h mr-2 group-hover:scale-110 transition-transform"></i>
+                        Recherche avancée
+                        <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                    <span class="text-gray-400 hidden sm:block">•</span>
+                    <a href="{{path('tarif')}}" class="group flex items-center text-white font-semibold hover:text-primary-300 transition-colors">
+                        <i class="fas fa-crown mr-2 group-hover:scale-110 transition-transform"></i>
+                        Voir nos offres premium
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <div class="w-6 h-10 border-2 border-white rounded-full flex justify-center">
+                <div class="w-1 h-3 bg-white rounded-full mt-2 animate-pulse"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                {% set stats = [
+                    {number: "10K+", label: "Textes législatifs", icon: "file-alt"},
+                    {number: "500+", label: "Doctrines fiscales", icon: "balance-scale"},
+                    {number: "24/7", label: "Accès permanent", icon: "clock"},
+                    {number: "99.9%", label: "Disponibilité", icon: "shield-alt"}
+                ] %}
+                
+                {% for stat in stats %}
+                <div class="text-center group" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
+                    <div class="w-20 h-20 bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:from-primary-600 group-hover:to-primary-700 transition-all duration-300 shadow-lg group-hover:shadow-xl">
+                        <i class="fas fa-{{ stat.icon }} text-white text-2xl"></i>
+                    </div>
+                    <div class="text-3xl font-black text-white mb-2">{{ stat.number }}</div>
+                    <div class="text-gray-300 font-medium">{{ stat.label }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Value Proposition -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-4xl md:text-5xl font-black text-white mb-6">
+                    Pourquoi <span class="text-gradient">Nasrulex</span> ?
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                    Face à la présomption irréfragable <span class="font-bold text-primary-300">« nul n'est censé ignorer la loi »</span>, 
+                    nous rendons la connaissance juridique accessible à tous
+                </p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto glass-effect rounded-3xl p-8 md:p-12" data-aos="fade-up" data-aos-delay="200">
+                <p class="text-lg md:text-xl text-gray-300 leading-relaxed text-center">
+                    Nasrulex révolutionne l'accès au droit sénégalais avec une plateforme intelligente qui centralise 
+                    l'ensemble des textes législatifs et réglementaires de 2000 à 2021. 
+                    <span class="font-semibold text-primary-300">Plus besoin de chercher ailleurs</span> - tout est là, 
+                    organisé, indexé et accessible en un clic.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section Interactive -->
+    <section class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-0 left-0 w-64 h-64 bg-white rounded-full"></div>
+            <div class="absolute bottom-0 right-0 w-96 h-96 bg-accent-500 rounded-full"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-4xl md:text-5xl font-black mb-6">Accédez à la connaissance en 3 étapes</h2>
+                <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+                    Un processus simplifié pour un accès immédiat à l'ensemble de nos ressources
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Step 1 -->
+                <div class="group text-center hover-lift" data-aos="fade-up" data-aos-delay="200">
+                    <div class="relative mb-8">
+                        <div class="w-24 h-24 bg-white/10 rounded-2xl flex items-center justify-center mx-auto group-hover:bg-white/20 transition-all duration-300">
+                            <i class="fas fa-user-plus text-3xl text-primary-300"></i>
+                        </div>
+                        <div class="absolute -top-2 -right-2 w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center text-sm font-bold">
+                            1
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Créez votre compte</h3>
+                    <p class="text-gray-300 leading-relaxed">
+                        Inscrivez-vous en 2 minutes et accédez instantanément à notre plateforme
+                    </p>
+                    <div class="mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="flex justify-center space-x-2">
+                            <span class="w-2 h-2 bg-primary-400 rounded-full"></span>
+                            <span class="w-2 h-2 bg-primary-400 rounded-full"></span>
+                            <span class="w-2 h-2 bg-primary-400 rounded-full"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="group text-center hover-lift" data-aos="fade-up" data-aos-delay="400">
+                    <div class="relative mb-8">
+                        <div class="w-24 h-24 bg-white/10 rounded-2xl flex items-center justify-center mx-auto group-hover:bg-white/20 transition-all duration-300">
+                            <i class="fas fa-cubes text-3xl text-primary-300"></i>
+                        </div>
+                        <div class="absolute -top-2 -right-2 w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center text-sm font-bold">
+                            2
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Choisissez votre pack</h3>
+                    <p class="text-gray-300 leading-relaxed">
+                        Sélectionnez l'offre qui correspond à vos besoins parmi nos 3 formules
+                    </p>
+                    <div class="mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="flex justify-center space-x-2">
+                            <span class="w-2 h-2 bg-primary-400 rounded-full animate-pulse" style="animation-delay: 0.2s;"></span>
+                            <span class="w-2 h-2 bg-primary-400 rounded-full animate-pulse" style="animation-delay: 0.4s;"></span>
+                            <span class="w-2 h-2 bg-primary-400 rounded-full animate-pulse" style="animation-delay: 0.6s;"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="group text-center hover-lift" data-aos="fade-up" data-aos-delay="600">
+                    <div class="relative mb-8">
+                        <div class="w-24 h-24 bg-white/10 rounded-2xl flex items-center justify-center mx-auto group-hover:bg-white/20 transition-all duration-300">
+                            <i class="fas fa-rocket text-3xl text-primary-300"></i>
+                        </div>
+                        <div class="absolute -top-2 -right-2 w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center text-sm font-bold">
+                            3
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Accédez à la connaissance</h3>
+                    <p class="text-gray-300 leading-relaxed">
+                        Explorez, recherchez et téléchargez tous les documents dont vous avez besoin
+                    </p>
+                    <div class="mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="flex justify-center space-x-2">
+                            <span class="w-2 h-2 bg-primary-400 rounded-full"></span>
+                            <span class="w-2 h-2 bg-primary-400 rounded-full"></span>
+                            <span class="w-2 h-2 bg-primary-400 rounded-full"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Grid Moderne -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-4xl md:text-5xl font-black text-white mb-6">Domaines d'expertise</h2>
+                <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+                    Explorez nos différentes catégories de documents spécialisés
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% set services = [
+                    {name: 'JURIDIQUE', count: juridique, icon: 'juridique.svg', colorClass: 'primary', gradient: 'from-primary-500 to-primary-600', textColor: 'text-primary-400'},
+                    {name: 'FISCAL', count: fiscal, icon: 'Fiscal.svg', colorClass: 'accent', gradient: 'from-accent-500 to-accent-600', textColor: 'text-accent-400'},
+                    {name: 'SOCIAL', count: social, icon: 'Social.svg', colorClass: 'primary', gradient: 'from-primary-500 to-primary-600', textColor: 'text-primary-400'},
+                    {name: 'FONCIER', count: foncier, icon: 'Foncier.svg', colorClass: 'accent', gradient: 'from-accent-500 to-accent-600', textColor: 'text-accent-400'},
+                    {name: 'AFFAIRES', count: affaire, icon: 'Affaire.svg', colorClass: 'primary', gradient: 'from-primary-500 to-primary-600', textColor: 'text-primary-400'},
+                    {name: 'BANQUE', count: banque, icon: 'Banque.svg', colorClass: 'accent', gradient: 'from-accent-500 to-accent-600', textColor: 'text-accent-400'}
+                ] %}
+                
+                {% for service in services %}
+                <div class="group hover-lift" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
+                    <div class="h-full bg-gradient-to-br from-dark-800 to-dark-900 rounded-2xl p-8 text-center transition-all duration-300 group-hover:shadow-2xl border border-white/10 group-hover:border-{{ service.colorClass }}-500/50">
+                        <div class="w-20 h-20 bg-gradient-to-br {{ service.gradient }} rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                            <img src="{{asset('assets/img/' ~ service.icon)}}" alt="{{service.name}}" class="h-10 filter brightness-0 invert">
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4">{{service.name}}</h3>
+                        <div class="w-12 h-1 bg-gradient-to-r {{ service.gradient }} mx-auto mb-6 rounded-full"></div>
+                        <div class="text-3xl font-black {{ service.textColor }} mb-2">{{service.count}}</div>
+                        <p class="text-gray-300 font-semibold">DOCUMENTS</p>
+                        <div class="mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <button class="{{ service.textColor }} font-semibold flex items-center justify-center mx-auto group/btn">
+                                Explorer
+                                <i class="fas fa-arrow-right ml-2 group-hover/btn:translate-x-1 transition-transform"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section Élégante -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-4xl md:text-5xl font-black mb-6">Ils nous font confiance</h2>
+                <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+                    Découvrez ce que les experts disent de notre plateforme
+                </p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+                <div class="glass-effect rounded-3xl p-8 md:p-12">
+                    <div class="flex items-start mb-8">
+                        <div class="w-16 h-16 bg-gradient-to-br from-primary-500 to-accent-500 rounded-2xl flex items-center justify-center mr-6">
+                            <i class="fas fa-user-graduate text-2xl text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold">Docteur Aliou NIANG</h3>
+                            <p class="text-primary-300 font-semibold">Docteur en Droit International Économique</p>
+                        </div>
+                    </div>
+                    <blockquote class="text-lg md:text-xl text-gray-300 leading-relaxed italic">
+                        "NASRULEX est une banque de textes juridiques nationaux, régionaux et internationaux qui s'appliquent à toutes les activités économiques. Il s'agit d'une plateforme d'information et de veille juridique novatrice et complète qui répond aux besoins immédiats et quotidiens des professionnels, chercheurs et étudiants."
+                    </blockquote>
+                    <div class="flex items-center justify-between mt-8 pt-8 border-t border-white/20">
+                        <div class="flex items-center space-x-1">
+                            {% for i in 1..5 %}
+                            <i class="fas fa-star text-yellow-400"></i>
+                            {% endfor %}
+                        </div>
+                        <div class="text-primary-300 font-semibold">
+                            Expert Certifié
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final -->
+    <section class="py-20 bg-gradient-to-r from-primary-600 to-accent-600 text-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center" data-aos="fade-up">
+                <h2 class="text-4xl md:text-5xl font-black mb-6">Prêt à révolutionner votre accès au droit ?</h2>
+                <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+                    Rejoignez des centaines de professionnels qui utilisent déjà Nasrulex au quotidien
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="{{path('inscription')}}" class="bg-white text-primary-600 px-8 py-4 rounded-xl font-bold hover:bg-gray-100 transition-colors duration-300 transform hover:scale-105 shadow-2xl">
+                        Commencer gratuitement
+                    </a>
+                    <a href="{{path('tarif')}}" class="border-2 border-white text-white px-8 py-4 rounded-xl font-bold hover:bg-white hover:text-primary-600 transition-all duration-300">
+                        Voir les offres
+                    </a>
+                </div>
+                <p class="text-sm mt-6 opacity-80">
+                    Essai de 7 jours • Aucune carte requise
+                </p>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,412 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<!-- Tarifs Section avec le même background -->
+<section class="min-h-screen relative py-20 overflow-hidden">
+    <!-- Background Animations -->
+    <div class="absolute inset-0">
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500 rounded-full opacity-20 blur-3xl animate-float"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent-500 rounded-full opacity-30 blur-3xl animate-float" style="animation-delay: 2s;"></div>
+    </div>
+
+    <div class="container mx-auto px-4 relative z-10">
+        <!-- En-tête -->
+        <div class="text-center mb-16" data-aos="fade-down">
+            <div class="inline-flex items-center px-6 py-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-6">
+                <span class="w-2 h-2 bg-primary-400 rounded-full mr-3 animate-pulse"></span>
+                <span class="text-white font-semibold text-sm">CHOISISSEZ VOTRE FORMULE</span>
+            </div>
+            <h1 class="text-5xl md:text-5xl font-black text-white mb-6">
+                Nos <span class="text-gradient">Offres</span> Premium
+            </h1>
+            <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+                Sélectionnez la formule qui correspond le mieux à vos besoins en matière de recherche documentaire
+            </p>
+        </div>
+
+        <!-- Messages Flash -->
+        <div class="max-w-4xl mx-auto mb-8">
+            {% for message in app.flashes('success') %}
+            <div class="bg-green-500/20 border border-green-400/30 text-green-100 px-6 py-4 rounded-2xl backdrop-blur-sm text-center" data-aos="fade-up">
+                <i class="fas fa-check-circle mr-2"></i>
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Grille des Packs -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            {% for pack in packs %}
+            <!-- Carte Pack -->
+            <div class="group hover-lift" data-aos="fade-up" data-aos-delay="{{ loop.index * 200 }}">
+                {% if pack.libelle == "PLATINIUM" %}
+                <!-- Pack PLATINIUM -->
+                <div class="relative">
+                    <!-- Badge Premium -->
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
+                        <div class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-6 py-2 rounded-full font-bold text-sm shadow-lg">
+                            <i class="fas fa-crown mr-2"></i>
+                            POPULAIRE
+                        </div>
+                    </div>
+                    
+                    <div class="glass-effect rounded-3xl p-8 h-full border-2 border-yellow-500/30 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-500/10 rounded-full -translate-y-16 translate-x-16"></div>
+                        
+                        <div class="text-center mb-6 relative z-10">
+                            <div class="w-16 h-16 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-gem text-white text-2xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-black text-white mb-2">{{ pack.libelle }}</h3>
+                            <div class="w-16 h-1 bg-yellow-500 mx-auto mb-4 rounded-full"></div>
+                            <p class="text-gray-300 text-sm">
+                                MODULES FULL ACCÈS<br>Accès Total Illimité
+                            </p>
+                        </div>
+
+                        <div class="text-center mb-6 relative z-10">
+                            <div class="text-4xl font-black text-yellow-400 mb-2">
+                                {{ pack.price|number_format(0, '', ' ') }} FCFA
+                            </div>
+                            <p class="text-gray-400 text-sm">par mois</p>
+                        </div>
+
+                        <div class="space-y-3 mb-8 relative z-10">
+                            <div class="flex items-center text-gray-300">
+                                <i class="fas fa-check text-yellow-500 mr-3"></i>
+                                <span>Accès à tous les modules</span>
+                            </div>
+                            <div class="flex items-center text-gray-300">
+                                <i class="fas fa-check text-yellow-500 mr-3"></i>
+                                <span>Recherche illimitée</span>
+                            </div>
+                            <div class="flex items-center text-gray-300">
+                                <i class="fas fa-check text-yellow-500 mr-3"></i>
+                                <span>Téléchargements illimités</span>
+                            </div>
+                            <div class="flex items-center text-gray-300">
+                                <i class="fas fa-check text-yellow-500 mr-3"></i>
+                                <span>Support prioritaire</span>
+                            </div>
+                            <div class="flex items-center text-gray-300">
+                                <i class="fas fa-check text-yellow-500 mr-3"></i>
+                                <span>Mises à jour incluses</span>
+                            </div>
+                        </div>
+
+                        <div class="text-center relative z-10">
+                            <a href="{{path('paiement',{ id : pack.id})}}" 
+                               class="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-white py-4 rounded-2xl font-bold hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-3xl block group/btn">
+                                <span class="flex items-center justify-center">
+                                    <i class="fas fa-rocket mr-2 group-hover/btn:scale-110 transition-transform"></i>
+                                    Je m'abonne
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                {% elseif pack.libelle == "SILVER" %}
+                <!-- Pack SILVER -->
+                <div class="glass-effect rounded-3xl p-8 h-full border-2 border-gray-400/30 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-gray-500/10 rounded-full -translate-y-16 translate-x-16"></div>
+                    
+                    <div class="text-center mb-6 relative z-10">
+                        <div class="w-16 h-16 bg-gradient-to-br from-gray-500 to-gray-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-star text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-black text-white mb-2">{{ pack.libelle }}</h3>
+                        <div class="w-16 h-1 bg-gray-400 mx-auto mb-4 rounded-full"></div>
+                        <p class="text-gray-300 text-sm">
+                            Accès Modules: <b>Juridique</b>, <b>Fiscal</b><br>Option: <b>Affaires</b> ou <b>Social</b>
+                        </p>
+                    </div>
+
+                    <div class="text-center mb-6 relative z-10">
+                        <div class="text-4xl font-black text-gray-300 mb-2">
+                            {{ pack.price|number_format(0, '', ' ') }} FCFA
+                        </div>
+                        <p class="text-gray-400 text-sm">par mois</p>
+                    </div>
+
+                    <div class="space-y-3 mb-8 relative z-10">
+                        <div class="flex items-center text-gray-300">
+                            <i class="fas fa-check text-gray-400 mr-3"></i>
+                            <span>Modules Juridique et Fiscal</span>
+                        </div>
+                        <div class="flex items-center text-gray-300">
+                            <i class="fas fa-check text-gray-400 mr-3"></i>
+                            <span>1 module au choix</span>
+                        </div>
+                        <div class="flex items-center text-gray-300">
+                            <i class="fas fa-check text-gray-400 mr-3"></i>
+                            <span>Recherche standard</span>
+                        </div>
+                        <div class="flex items-center text-gray-300">
+                            <i class="fas fa-check text-gray-400 mr-3"></i>
+                            <span>Support par email</span>
+                        </div>
+                        <div class="flex items-center text-gray-300">
+                            <i class="fas fa-check text-gray-400 mr-3"></i>
+                            <span>Mises à jour incluses</span>
+                        </div>
+                    </div>
+
+                    <div class="text-center relative z-10">
+                        <a href="{{path('paiement',{ id : pack.id})}}" 
+                           class="w-full bg-gradient-to-r from-gray-600 to-gray-700 text-white py-4 rounded-2xl font-bold hover:from-gray-700 hover:to-gray-800 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-3xl block group/btn">
+                            <span class="flex items-center justify-center">
+                                <i class="fas fa-bolt mr-2 group-hover/btn:scale-110 transition-transform"></i>
+                                Je m'abonne
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                {% elseif pack.libelle == "GOLD" %}
+                <!-- Pack GOLD -->
+                <div class="glass-effect rounded-3xl p-8 h-full border-2 border-orange-500/30 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full -translate-y-16 translate-x-16"></div>
+                    
+                    <div class="text-center mb-6 relative z-10">
+                        <div class="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-award text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-black text-white mb-2">{{ pack.libelle }}</h3>
+                        <div class="w-16 h-1 bg-orange-500 mx-auto mb-4 rounded-full"></div>
+                        <p class="text-gray-300 text-sm">
+                            Accès Module: <b>Juridique</b><br>Accès Total Juridique
+                        </p>
+                    </div>
+
+                    <div class="text-center mb-6 relative z-10">
+                        <div class="text-4xl font-black text-orange-400 mb-2">
+                            {{ pack.price|number_format(0, '', ' ') }} FCFA
+                        </div>
+                        <p class="text-gray-400 text-sm">par mois</p>
+                    </div>
+
+                    <div class="space-y-3 mb-8 relative z-10">
+                        <div class="flex items-center text-gray-300">
+                            <i class="fas fa-check text-orange-500 mr-3"></i>
+                            <span>Module Juridique uniquement</span>
+                        </div>
+                        <div class="flex items-center text-gray-300">
+                            <i class="fas fa-check text-orange-500 mr-3"></i>
+                            <span>Recherche standard</span>
+                        </div>
+                        <div class="flex items-center text-gray-300">
+                            <i class="fas fa-check text-orange-500 mr-3"></i>
+                            <span>Téléchargements limités</span>
+                        </div>
+                        <div class="flex items-center text-gray-300">
+                            <i class="fas fa-check text-orange-500 mr-3"></i>
+                            <span>Support par email</span>
+                        </div>
+                        <div class="flex items-center text-gray-300">
+                            <i class="fas fa-check text-orange-500 mr-3"></i>
+                            <span>Mises à jour incluses</span>
+                        </div>
+                    </div>
+
+                    <div class="text-center relative z-10">
+                        <a href="{{path('paiement',{ id : pack.id})}}" 
+                           class="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white py-4 rounded-2xl font-bold hover:from-orange-600 hover:to-orange-700 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-3xl block group/btn">
+                            <span class="flex items-center justify-center">
+                                <i class="fas fa-play mr-2 group-hover/btn:scale-110 transition-transform"></i>
+                                Démarrer
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Section Informations Complémentaires -->
+        <div class="max-w-4xl mx-auto mt-16" data-aos="fade-up">
+            <div class="glass-effect rounded-3xl p-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <div>
+                        <div class="w-12 h-12 bg-primary-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-sync-alt text-primary-400 text-xl"></i>
+                        </div>
+                        <h4 class="text-white font-bold mb-2">Flexibilité Totale</h4>
+                        <p class="text-gray-300 text-sm">Changez de formule à tout moment selon vos besoins</p>
+                    </div>
+                    <div>
+                        <div class="w-12 h-12 bg-primary-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-shield-alt text-primary-400 text-xl"></i>
+                        </div>
+                        <h4 class="text-white font-bold mb-2">Paiement Sécurisé</h4>
+                        <p class="text-gray-300 text-sm">Transactions cryptées et sécurisées</p>
+                    </div>
+                    <div>
+                        <div class="w-12 h-12 bg-primary-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-headset text-primary-400 text-xl"></i>
+                        </div>
+                        <h4 class="text-white font-bold mb-2">Support 7j/7</h4>
+                        <p class="text-gray-300 text-sm">Notre équipe vous accompagne à chaque étape</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Final -->
+        <div class="text-center mt-12" data-aos="fade-up" data-aos-delay="200">
+            <p class="text-gray-300 mb-6">Vous avez des questions sur nos offres ?</p>
+            <a href="#contact" class="bg-gradient-to-r from-primary-500 to-accent-500 text-white px-8 py-4 rounded-2xl font-bold hover:from-primary-600 hover:to-accent-600 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-3xl inline-flex items-center group">
+                <i class="fas fa-comments mr-2 group-hover:scale-110 transition-transform"></i>
+                Contactez notre équipe
+            </a>
+        </div>
+    </div>
+</section>
+
+<script>
+// Animation des cartes au survol
+document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.hover-lift');
+    
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-10px)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+
+    // Animation des prix
+    const prices = document.querySelectorAll('.text-4xl');
+    prices.forEach(price => {
+        price.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.05)';
+            this.style.transition = 'transform 0.3s ease';
+        });
+        
+        price.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+    });
+
+    // Effet de particules sur les boutons
+    const buttons = document.querySelectorAll('a[href*="paiement"]');
+    buttons.forEach(button => {
+        button.addEventListener('mouseenter', function() {
+            const sparkles = ['✨', '⭐', '💫', '🌟'];
+            const sparkle = sparkles[Math.floor(Math.random() * sparkles.length)];
+            
+            const sparkleElement = document.createElement('span');
+            sparkleElement.textContent = sparkle;
+            sparkleElement.className = 'absolute animate-ping';
+            sparkleElement.style.left = Math.random() * 100 + '%';
+            sparkleElement.style.top = Math.random() * 100 + '%';
+            
+            this.appendChild(sparkleElement);
+            
+            setTimeout(() => {
+                sparkleElement.remove();
+            }, 1000);
+        });
+    });
+});
+
+// Compteur animé pour les prix (optionnel)
+function animateValue(element, start, end, duration) {
+    let startTimestamp = null;
+    const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        const value = Math.floor(progress * (end - start) + start);
+        element.textContent = value.toLocaleString('fr-FR') + ' FCFA';
+        if (progress < 1) {
+            window.requestAnimationFrame(step);
+        }
+    };
+    window.requestAnimationFrame(step);
+}
+
+// Démarrer l'animation des prix quand ils sont visibles
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const priceElement = entry.target;
+            const priceText = priceElement.textContent.replace(/\sFCFA/g, '').replace(/\s/g, '');
+            const priceValue = parseInt(priceText);
+            
+            if (!priceElement.classList.contains('animated')) {
+                priceElement.classList.add('animated');
+                animateValue(priceElement, 0, priceValue, 2000);
+            }
+        }
+    });
+}, { threshold: 0.5 });
+
+// Observer tous les éléments de prix
+document.querySelectorAll('.text-4xl').forEach(el => observer.observe(el));
+</script>
+
+<style>
+/* Styles supplémentaires pour les cartes de prix */
+.hover-lift {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* Effet de brillance sur les cartes */
+.glass-effect::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s;
+}
+
+.glass-effect:hover::before {
+    left: 100%;
+}
+
+/* Animation des icônes de check */
+.fa-check {
+    transition: transform 0.3s ease;
+}
+
+.group:hover .fa-check {
+    transform: scale(1.2) rotate(360deg);
+}
+
+/* Responsive design amélioré */
+@media (max-width: 768px) {
+    .grid-cols-3 {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .glass-effect {
+        margin: 0 1rem;
+    }
+}
+
+/* Effet de gradient animé pour les boutons */
+.bg-gradient-to-r {
+    background-size: 200% 200%;
+    animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+</style>
+{% endblock %}

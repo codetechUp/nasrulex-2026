@@ -1,0 +1,779 @@
+                                
+                                
+                                
+                                .scroll {
+                                 overflow-y: scroll;
+                                 height: 222px;
+                                }
+                                
+                                .carte {
+                                    cursor: pointer;
+                                }
+                                
+                                .carte:hover .card {
+                                    -webkit-transform: translate(50px, -20px);
+                                    ;
+                                    transform: translate(0, -20px);
+                                    ;
+                                    -webkit-transition: 0.75s;
+                                    transition: 0.75s;
+                                }
+                                
+                                .pack {
+                                    cursor: pointer;
+                                }
+                                
+                                .pack:hover .card {
+                                    -webkit-transform: translate(50px, -20px);
+                                    ;
+                                    transform: translate(0, -20px);
+                                    ;
+                                    -webkit-transition: 0.75s;
+                                    transition: 0.75s;
+                                }
+                                
+                                .navbar-toggler>.close {
+                                    display: inline;
+                                }
+                                
+                                .navbar-toggler.collapsed>.close,
+                                .navbar-toggler:not(.collapsed)>.navbar-toggler-icon {
+                                    display: none;
+                                }
+                                
+                                input:focus {
+                                    outline: none;
+                                }
+                                
+                                .banniere {
+                                    background-image: url("baniere.png");
+                                    width: 100%;
+                                    height: 561px;
+                                    background-repeat: no-repeat;
+                                    background-attachment: fixed;
+                                    background-position: center;
+                                    z-index: 10;
+                                }
+                                
+                                .banner2 {
+                                    padding: 12%;
+                                }
+                                
+                                .bande {
+                                    height: 77px;
+                                    width: 100%;
+                                }
+                                
+                                input:focus,
+                                textarea:focus,
+                                select:focus {
+                                    outline: none!important;
+                                    ;
+                                }
+                                
+                                textarea:hover,
+                                input:hover,
+                                textarea:active,
+                                input:active,
+                                textarea:focus,
+                                input:focus,
+                                button:focus,
+                                button:active,
+                                button:hover,
+                                label:focus,
+                                .btn:active,
+                                .btn.active {
+                                    outline: 0px !important;
+                                    -webkit-appearance: none !important;
+                                    ;
+                                    box-shadow: none !important;
+                                }
+                                
+                                .flex-form input[type="submit"] {
+                                    background: #ef3f5a;
+                                    border: 1px solid #ef3f5a;
+                                    color: #fff;
+                                    padding: 0 30px;
+                                    cursor: pointer;
+                                    -webkit-transition: all 0.2s;
+                                    -moz-transition: all 0.2s;
+                                    transition: all 0.2s;
+                                }
+                                
+                                .flex-form input[type="submit"]:hover {
+                                    background: #d73851;
+                                    border: 1px solid #d73851;
+                                }
+                                
+                                .flex-form {
+                                    display: -webkit-box;
+                                    display: flex;
+                                    z-index: 10;
+                                    position: relative;
+                                    width: 500px;
+                                    box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.3);
+                                }
+                                
+                                .flex-form>* {
+                                    border: 0;
+                                    padding: 0 0 0 10px;
+                                    background: #fff;
+                                    line-height: 50px;
+                                    font-size: 1rem;
+                                    border-radius: 0;
+                                    outline: 0;
+                                    -webkit-appearance: none;
+                                }
+                                
+                                input[type="search"] {
+                                    flex-basis: 500px;
+                                }
+                                
+                                .flex-form input[type="submit"] {
+                                    background: #ef3f5a;
+                                    border: 1px solid #ef3f5a;
+                                    color: #fff;
+                                    padding: 0 30px;
+                                    cursor: pointer;
+                                    -webkit-transition: all 0.2s;
+                                    -moz-transition: all 0.2s;
+                                    transition: all 0.2s;
+                                }
+                                
+                                .flex-form input[type="submit"]:hover {
+                                    background: #d73851;
+                                    border: 1px solid #d73851;
+                                }
+                                
+                                .flex-form {
+                                    display: -webkit-box;
+                                    display: flex;
+                                    z-index: 10;
+                                    position: relative;
+                                    width: 500px;
+                                }
+                                
+                                .flex-form>* {
+                                    border: 0;
+                                    padding: 0 0 0 10px;
+                                }
+                                
+                                .flex-form input[type="submit"] {
+                                    background: #ef3f5a;
+                                    border: 1px solid #ef3f5a;
+                                    color: #fff;
+                                    padding: 0 30px;
+                                    cursor: pointer;
+                                    -webkit-transition: all 0.2s;
+                                    -moz-transition: all 0.2s;
+                                    transition: all 0.2s;
+                                }
+                                
+                                .flex-form input[type="submit"]:hover {
+                                    background: #d73851;
+                                    border: 1px solid #d73851;
+                                }
+                                
+                                .flex-form {
+                                    display: -webkit-box;
+                                    display: flex;
+                                    z-index: 10;
+                                    position: relative;
+                                    width: 100%;
+                                    box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.3);
+                                }
+                                
+                                .flex-form>* {
+                                    border: 0;
+                                    padding: 0 0 0 10px;
+                                    background: #fff;
+                                    line-height: 50px;
+                                    font-size: 1rem;
+                                    border-radius: 0;
+                                    outline: 0;
+                                    -webkit-appearance: none;
+                                }
+                                
+                                select[type="search"] {
+                                    flex-basis: 500px;
+                                }
+                                
+                                @media all and (max-width:800px) {
+                                    body {
+                                        font-size: 0.9rem;
+                                    }
+                                    .flex-form {
+                                        width: 100%;
+                                    }
+                                    input[type="search"] {
+                                        flex-basis: 100%;
+                                    }
+                                    select {
+                                        flex-basis: 100%;
+                                    }
+                                    .flex-form>* {
+                                        background: #fff;
+                                        line-height: 50px;
+                                        font-size: 1rem;
+                                        border-radius: 0;
+                                        outline: 0;
+                                        -webkit-appearance: none;
+                                        font-size: 0.9rem;
+                                    }
+                                }
+                                
+                                input[type="search"] {
+                                    flex-basis: 500px;
+                                }
+                                
+                                * {
+                                    font-family: 'Poppins', sans-serif ;
+                                    line-height: 20px;
+                                    font-weight: 500;
+                                }
+                                
+                                body {
+                                    font-family: 'Poppins', sans-serif !important;
+                                    background-color: white!important;
+                                }
+                                
+                                .yes {
+                                    background-color: #3c4474;
+                                }
+                                
+                                .des {
+                                    padding-top: 10%;
+                                    color: white;
+                                    font-size: 3.2em;
+                                }
+                                
+                                .chercher {
+                                    padding-left: 34%;
+                                }
+                                
+                                h2.textb {
+                                    color: white;
+                                    font-weight: bold;
+                                    font-size: 2.3em;
+                                }
+                                
+                                .footer {
+                                    margin-top: 100px;
+                                    background-color: black;
+                                    width: 100%;
+                                    height: 400px;
+                                }
+                                
+                                .footer-copyright {
+                                    background-color: black;
+                                }
+                                
+                                hr {
+                                    background-color: blue;
+                                }
+                                
+                                @media (min-width: 990px) {
+                                    .dropdown:hover>.dropdown-menu {
+                                        display: block;
+                                        border-bottom: 2px solid gold;
+                                        width: 200%;
+                                    }
+                                    .dropdown-menu {
+                                        background: blue;
+                                    }
+                                }
+                                
+                                .bord {
+                                    border-bottom: 0.5px solid rgb(230, 226, 226);
+                                }
+                                
+                                #nav {
+                                    border-bottom: 0.5px solid rgb(241, 239, 239);
+                                    position: relative;
+                                    top: 0px;
+                                    left: 0;
+                                    z-index: 9999;
+                                    width: 100%;
+                                    height: 50px;
+                                    background-color: gray;
+                                }
+                                
+                                .sticky {
+                                    position: fixed;
+                                    top: 0;
+                                    width: 100%;
+                                    z-index: 9999;
+                                }
+                                
+                                .ns {
+                                    z-index: 1000;
+                                }
+                                
+                                .con {
+                                    border-right: 0.5px solid rgb(218, 216, 216);
+                                    font-size: 13px;
+                                }
+                                
+                                .ins {
+                                    font-size: 14px;
+                                }
+                                
+                                div .dropdown-divider {
+                                    color: yellow;
+                                }
+                                
+                                .cont {
+                                    font-size: 14px;
+                                    border-right: 0.5px solid rgb(218, 216, 216);
+                                }
+                                
+                                .dash {
+                                    font-size: 14px;
+                                    border-right: 0.5px solid rgb(218, 216, 216);
+                                }
+                                
+                                .dec {
+                                    font-size: 14px;
+                                }
+                                
+                                a#cRetour {
+                                    border-radius: 3px;
+                                    padding: 12px;
+                                    font-size: 15px;
+                                    text-align: center;
+                                    color: #fff;
+                                    background: #3c4474;
+                                    ;
+                                    position: fixed;
+                                    right: 20px;
+                                    opacity: 1;
+                                    z-index: 99999;
+                                    transition: all ease-in 0.2s;
+                                    backface-visibility: hidden;
+                                    -webkit-backface-visibility: hidden;
+                                    text-decoration: none;
+                                }
+                                
+                                a#cRetour:before {
+                                    content: "\25b2";
+                                }
+                                
+                                a#cRetour:hover {
+                                    background: #3c4474;
+                                    ;
+                                    transition: all ease-in 0.2s;
+                                }
+                                
+                                a#cRetour.cInvisible {
+                                    bottom: 20%;
+                                    opacity: 0;
+                                    transition: all ease-in 0.5s;
+                                }
+                                
+                                a#cRetour.cVisible {
+                                    bottom: 20%;
+                                    opacity: 1;
+                                }
+                                
+                                button.btn:hover {
+                                    background-color: royalblue;
+                                }
+                                
+                                @media (max-width: 990px) {
+                                    button.btn {
+                                        width: 100%;
+                                    }
+                                }
+                                
+                                .reg1 {
+                                    margin-bottom: 10%;
+                                    font-family: 'Times New Roman', Times, serif;
+                                }
+                                
+                                .reg {
+                                    margin-bottom: 10%;
+                                }
+                                
+                                footer p:hover {
+                                    color: blueviolet;
+                                }
+                                
+                                footer p a {
+                                    color: black;
+                                }
+                                
+                                footer p a:hover {
+                                    text-decoration: none;
+                                    color: blueviolet;
+                                }
+                                
+                                footer .rs a {
+                                    color: honeydew;
+                                }
+                                
+                                footer .rs a:hover {
+                                    text-decoration: none;
+                                    color: black;
+                                }
+                                
+                                span .navbar-toggler-icon:hover {
+                                    background-color: blue;
+                                }
+                                
+                                .tre hr {
+                                    margin-top: 5%;
+                                    background-color: rgb(151, 151, 151);
+                                    margin-left: -53px;
+                                    margin-right: -53px;
+                                }
+                                
+                                .col {
+                                    font-size: 80%;
+                                }
+                                
+                                h4 {
+                                    font-weight: bold;
+                                }
+                                
+                                .fa-id-card,
+                                .fa-chalkboard-teacher,
+                                .fa-briefcase {
+                                    color: white;
+                                }
+                                
+                                input.form-check-input {
+                                    padding: 50%;
+                                    background-color: Cobalt rgb(15, 180, 180);
+                                }
+                                
+                                a {
+                                    text-decoration: none;
+                                }
+                                
+                                .card-body .form-row {
+                                    margin-top: 5%;
+                                    margin-left: 5%;
+                                }
+                                
+                                h4 b {
+                                    padding: 1%;
+                                    border-radius: 50%;
+                                    background-color: blue;
+                                }
+                                
+                                div .juri img {
+                                    width: 75%;
+                                }
+                                
+                                .ae .container-fluid {
+                                    background-image: url("baniere.jpg");
+                                    height: 100%;
+                                    margin-top: -3%;
+                                    padding-top: 10%;
+                                    width: 100%;
+                                    background-attachment: fixed;
+                                    background-position: center;
+                                    z-index: 10;
+                                    margin-bottom: -10%;
+                                }
+                                
+                                .txt {
+                                    margin-top: -8%;
+                                    margin-bottom: 3%;
+                                    font-weight: normal;
+                                }
+                                
+                                label {
+                                    font-size: 12px;
+                                }
+                                
+                                .t {
+                                    font-size: 11px;
+                                }
+                                
+                                div .form-control {
+                                    font-size: 12px;
+                                }
+                                
+                                a .dropdown-menu {
+                                    width: 100%;
+                                }
+                                
+                                .log {
+                                    background-image: url("baniere.png");
+                                    height: 100%;
+                                    margin-top: -3%;
+                                    padding-top: 10%;
+                                    background-attachment: fixed;
+                                    background-position: center;
+                                    z-index: 10;
+                                    padding-bottom: 20%;
+                                }
+                                
+                                .font-small {
+                                    font-family: Verdana, Geneva, Tahoma, sans-serif;
+                                }
+                                
+                                div .bon1 {
+                                    border: 2px solid rgb(11, 11, 109);
+                                }
+                                
+                                div .bon2 {
+                                    border: 2px solid rgb(15, 180, 180);
+                                }
+                                
+                                div .bon3 {
+                                    border: 2px solid rgb(255, 0, 221);
+                                }
+                                
+                                div .bon4 {
+                                    border: 2px solid springgreen;
+                                }
+                                
+                                .bc4 {
+                                    padding-top: -40%;
+                                }
+                                
+                                .bc {
+                                    color: white;
+                                }
+                                
+                                .bc:hover {
+                                    text-decoration: none;
+                                    color: white;
+                                }
+                                
+                                .sa {
+                                    padding: 1%;
+                                }
+                                
+                                .ls:hover {
+                                    text-decoration: none;
+                                    color: white;
+                                }
+                                
+                                div .t1 {
+                                    width: 30%;
+                                    margin-left: 30%;
+                                }
+                                
+                                div .p1 {
+                                    width: 40%;
+                                    margin-left: 30%;
+                                }
+                                
+                                .t4 {
+                                    padding-top: 57%;
+                                }
+                                
+                                div .rg {
+                                    margin-left: 10%;
+                                }
+                                
+                                .bt {
+                                    background-color: rgb(246, 244, 244);
+                                    margin-left: -4.5%;
+                                    margin-bottom: -6.5%;
+                                    margin-right: -4.5%;
+                                }
+                                
+                                .bt1 {
+                                    background-color: rgb(246, 244, 244);
+                                    margin-bottom: -2%;
+                                }
+                                
+                                div .tp {
+                                    margin-top: -40%;
+                                    width: 40%;
+                                    margin-left: 30%;
+                                }
+                                
+                                .ml6 {
+                                    position: relative;
+                                    font-weight: 900;
+                                    font-size: 3.3em;
+                                }
+                                
+                                .ml6 .text-wrapper {
+                                    position: relative;
+                                    display: inline-block;
+                                    padding-top: 0.2em;
+                                    padding-right: 0.05em;
+                                    padding-bottom: 0.1em;
+                                    overflow: hidden;
+                                }
+                                
+                                .ml6 .letter {
+                                    display: inline-block;
+                                    line-height: 1em;
+                                    padding-top: 10%;
+                                    color: white;
+                                }
+                                
+                                .spinner {
+                                    display: inline-block;
+                                    opacity: 0;
+                                    width: 0;
+                                    -webkit-transition: opacity 0.25s, width 0.25s;
+                                    -moz-transition: opacity 0.25s, width 0.25s;
+                                    -o-transition: opacity 0.25s, width 0.25s;
+                                    transition: opacity 0.25s, width 0.25s;
+                                }
+                                
+                                .has-spinner.active {
+                                    cursor: progress;
+                                }
+                                
+                                .has-spinner.active .spinner {
+                                    opacity: 1;
+                                    width: auto;
+                                }
+                                
+                                .has-spinner.btn.active .spinner {
+                                    min-width: 20px;
+                                }
+                                
+                                .reg1 {
+                                    background-image: url("baniere.png");
+                                    height: 100%;
+                                }
+                                
+                                .ptxt {
+                                    font-size: 18px;
+                                }
+                                
+                                .sl {
+                                    font-size: 22px;
+                                    font-family: "Times New Roman" verdana;
+                                    text-align: justify;
+                                    text-justify: inter-word;
+                                }
+                                
+                                .n {
+                                    font-size: 20px;
+                                }
+                                
+                                .hexagon {
+                                    position: relative;
+                                    height: 500px;
+                                    width: 300px;
+                                    background-color: white;
+                                    -webkit-clip-path: polygon(50% 0%, 100% 9%, 100% 93%, 50% 100%, 0 92%, 0 8%);
+                                    clip-path: polygon(50% 0%, 100% 9%, 100% 93%, 50% 100%, 0 92%, 0 8%);
+                                }
+                                
+                                .hexagon .fils {
+                                    position: absolute;
+                                    top: 150px;
+                                    height: 300px;
+                                    width: 300px;
+                                    background-color: #00B5C7;
+                                    -webkit-clip-path: polygon(50% 0%, 100% 9%, 100% 93%, 50% 100%, 0 92%, 0 8%);
+                                    clip-path: polygon(50% 0%, 100% 9%, 100% 93%, 50% 100%, 0 92%, 0 8%);
+                                }
+                                
+                                .pricetable {
+                                    margin-top: 20px;
+                                    margin-bottom: 20px;
+                                    width: 98%!important;
+                                    background-color: white;
+                                    border-radius: 2%;
+                                    height: 500px;
+                                }
+                                
+                                .titleprice1 {
+                                    margin: 10px;
+                                    line-height: 0.85;
+                                    background: linear-gradient(to right, #30CFD0 0%, #018786 100%);
+                                    -webkit-background-clip: text;
+                                    background-clip: text;
+                                    -webkit-text-fill-color: transparent;
+                                }
+                                
+                                .titleprice2 {
+                                    margin: 10px;
+                                    line-height: 0.85;
+                                    background: linear-gradient(to right, rgb(160, 112, 9) 0%, #018786 100%);
+                                    -webkit-background-clip: text;
+                                    background-clip: text;
+                                    -webkit-text-fill-color: transparent;
+                                }
+                                
+                                .titleprice3 {
+                                    margin: 10px;
+                                    line-height: 0.85;
+                                    background: linear-gradient(to right, rgb(160, 9, 67) 0%, #018786 100%);
+                                    -webkit-background-clip: text;
+                                    background-clip: text;
+                                    -webkit-text-fill-color: transparent;
+                                }
+                                
+                                .price1 {
+                                    text-align: center;
+                                    width: 100%;
+                                    height: 77px;
+                                    background: linear-gradient(to right, #30CFD0 0%, #018786 100%);
+                                }
+                                
+                                .price2 {
+                                    text-align: center;
+                                    width: 100%;
+                                    height: 77px;
+                                    background: linear-gradient(to right, rgb(160, 112, 9) 0%, #018786 100%);
+                                }
+                                
+                                .price3 {
+                                    text-align: center;
+                                    width: 100%;
+                                    height: 77px;
+                                    background: linear-gradient(to right, rgb(160, 9, 67) 0%, #018786 100%);
+                                }
+                                
+                                .priceprice span {
+                                    margin-top: 10px;
+                                    color: white;
+                                    font-size: 50;
+                                    font-weight: 100;
+                                }
+                                
+                                .princecondition p {
+                                    text-align: center;
+                                    margin: 10px;
+                                    color: gray;
+                                }
+                                
+                                .ligne1 {
+                                    height: 2px;
+                                    background: linear-gradient(to right, #30CFD0 0%, #018786 100%);
+                                    margin: 3px 10px;
+                                }
+                                
+                                .ligne2 {
+                                    height: 2px;
+                                    background: linear-gradient(to right, rgb(160, 112, 9) 0%, #018786 100%);
+                                    margin: 3px 10px;
+                                }
+                                
+                                .ligne3 {
+                                    height: 2px;
+                                    background: linear-gradient(to right, rgb(160, 9, 67) 0%, #018786 100%);
+                                    margin: 3px 10px;
+                                }
+                                
+                                .ligne {
+                                    height: 2px;
+                                    background-color: gray;
+                                    margin: 10px;
+                                }
+                                
+                                .btn-price1 {
+                                    background: linear-gradient(to right, #30CFD0 0%, #018786 100%);
+                                }
+                                
+                                .btn-price2 {
+                                    background: linear-gradient(to right, rgb(160, 112, 9) 0%, #018786 100%);
+                                }
+                                
+                                .btn-price3 {
+                                    background: linear-gradient(to right, rgb(160, 9, 67) 0%, #018786 100%);
+                                }

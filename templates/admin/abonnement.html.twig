@@ -1,0 +1,45 @@
+{% extends 'admin.html.twig' %} {% block body %}
+<div class="mt-5">
+    <div class="container">
+        <div class="mt-5 pt5">
+            {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+            {% endfor %} {% for message in app.flashes('danger') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="table-responsive">
+            <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Nom du Packs</th>
+                        <th>Categorie(s)</th>
+                        <th>Date de souscription</th>
+                        <th>Date d'expiration </th>
+                        <th>Facture</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for sub in subs %}
+                    <tr>
+                        <td> {{ sub.pack.libelle }} </td>
+
+                        <td>{% for cat in sub.pack.categories %} {{ cat.libelle }} ,{% endfor %}</td>
+
+                        <td> {{ sub.dateDebut|date('d-m-Y') }}</td>
+                        <td>{{ sub.dateFin|date('d-m-Y') }} </td>
+                        <td> <a href="{{ sub.linkFacture }}" class="btn-btn-success" target='_blank'>Télecharger</a> </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
