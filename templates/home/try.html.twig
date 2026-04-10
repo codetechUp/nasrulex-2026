@@ -27,7 +27,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
             <!-- Sidebar Filtres -->
             <div class="lg:col-span-1" data-aos="fade-right">
-                <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-white/20 sticky top-24">
+                <div class="bg-dark-800/95 backdrop-blur-md rounded-3xl p-6 border border-white/30 sticky top-24 shadow-2xl">
                     <div class="flex items-center mb-6">
                         <div class="w-10 h-10 bg-primary-500/20 rounded-2xl flex items-center justify-center mr-4">
                             <i class="fas fa-filter text-primary-400"></i>
@@ -42,7 +42,7 @@
                             <div class="relative">
                                 <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                                 <input type="text" name="search" value="{{ mots }}" 
-                                       class="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
+                                       class="w-full pl-10 pr-4 py-3 bg-dark-700 border border-white/30 rounded-2xl text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
                                        placeholder="Entrez vos mots clés...">
                             </div>
                         </div>
@@ -51,14 +51,14 @@
                         <div>
                             <label class="block text-white font-semibold mb-3">Catégorie</label>
                             <div class="relative">
-                                <select name="categorie" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent appearance-none transition-all duration-300">
-                                    <option value='' selected>Toutes les catégories</option>
+                                <select name="categorie" class="w-full px-4 py-3 bg-dark-700 border border-white/30 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent appearance-none transition-all duration-300" style="color-scheme: dark;">
+                                    <option value='' selected class="bg-dark-800 text-white">Toutes les catégories</option>
                                     {% for cat in categories %}
-                                    <option value="{{ cat.id }}" {{ app.request.request.get('categorie') == cat.id ? 'selected' : '' }}>
+                                    <option value="{{ cat.id }}" {{ app.request.request.get('categorie') == cat.id ? 'selected' : '' }} class="bg-dark-800 text-white">
                                         {{ cat.libelle }}
                                     </option>
                                     {% for sousCat in cat.sousCategorie %}
-                                    <option value="{{ cat.id }}-{{ sousCat.id }}" {{ app.request.request.get('categorie') == cat.id ~ '-' ~ sousCat.id ? 'selected' : '' }}>
+                                    <option value="{{ cat.id }}-{{ sousCat.id }}" {{ app.request.request.get('categorie') == cat.id ~ '-' ~ sousCat.id ? 'selected' : '' }} class="bg-dark-800 text-white">
                                         {{ cat.libelle }} › {{ sousCat.libelle }}
                                     </option>
                                     {% endfor %}
@@ -72,7 +72,7 @@
                         <div>
                             <label class="block text-white font-semibold mb-3">Date de publication</label>
                             <input type="date" value="{{ datepub }}" name="datepub" 
-                                   class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300">
+                                   class="w-full px-4 py-3 bg-dark-700 border border-white/30 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300" style="color-scheme: dark;">
                         </div>
 
                         <!-- Boutons -->
@@ -98,7 +98,7 @@
             <!-- Résultats -->
             <div class="lg:col-span-3" data-aos="fade-left">
                 <!-- En-tête Résultats -->
-                <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-6 mb-6 border border-white/20">
+                <div class="bg-dark-800/95 backdrop-blur-md rounded-3xl p-6 mb-6 border border-white/30 shadow-xl">
                     <div class="flex flex-col md:flex-row justify-between items-center">
                         <div>
                             <h2 class="text-2xl font-bold text-white mb-2">
@@ -125,7 +125,7 @@
 
                 {% if empty == true %}
                 <!-- Aucun résultat -->
-                <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-12 text-center border border-white/20">
+                <div class="bg-dark-800/95 backdrop-blur-md rounded-3xl p-12 text-center border border-white/30 shadow-xl">
                     <div class="w-24 h-24 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <i class="fas fa-search text-3xl text-gray-400"></i>
                     </div>
@@ -144,7 +144,7 @@
                     
                     {% if juri and res %}
                     <!-- Catégorie Juridique -->
-                    <div class="bg-white/10 backdrop-blur-sm rounded-3xl overflow-hidden border border-white/20 transition-all duration-300 hover:border-primary-500/50 category-card">
+                    <div class="bg-dark-800/95 backdrop-blur-md rounded-3xl overflow-hidden border border-white/30 transition-all duration-300 hover:border-primary-500/70 category-card shadow-xl">
                         <div class="bg-primary-600/30 p-6 border-l-4 border-primary-400">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
@@ -166,7 +166,7 @@
                             {% for key, res in res %}
                             <div class="p-6 border-b border-white/10 last:border-b-0">
                                 <!-- Sous-catégorie -->
-                                <div class="flex items-center justify-between mb-4 p-4 bg-white/5 rounded-2xl">
+                                <div class="flex items-center justify-between mb-4 p-4 bg-dark-700/80 rounded-2xl border border-white/10">
                                     <div class="flex items-center">
                                         <div class="w-8 h-8 bg-primary-500/20 rounded-full flex items-center justify-center mr-3">
                                             <i class="fas fa-folder text-primary-400 text-sm"></i>
@@ -181,7 +181,7 @@
                                 <!-- Documents -->
                                 <div class="space-y-4">
                                     {% for docs in res %}
-                                    <div class="bg-white/5 rounded-2xl p-4 hover:bg-white/10 transition-all duration-300 group document-card border border-white/10 hover:border-white/20 transform hover:-translate-y-1">
+                                    <div class="bg-dark-700/60 rounded-2xl p-4 hover:bg-dark-700/80 transition-all duration-300 group document-card border border-white/20 hover:border-primary-400/50 transform hover:-translate-y-1 shadow-lg">
                                         <div class="flex items-start justify-between">
                                             <div class="flex-1">
                                                 <div class="flex items-center mb-2">
@@ -247,7 +247,7 @@
 
                     {% if fiscal and fis %}
                     <!-- Catégorie Fiscal -->
-                    <div class="bg-white/10 backdrop-blur-sm rounded-3xl overflow-hidden border border-white/20 transition-all duration-300 hover:border-purple-500/50 category-card">
+                    <div class="bg-dark-800/95 backdrop-blur-md rounded-3xl overflow-hidden border border-white/30 transition-all duration-300 hover:border-purple-500/70 category-card shadow-xl">
                         <div class="bg-purple-600/30 p-6 border-l-4 border-purple-400">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
@@ -269,7 +269,7 @@
                             {% for key, res in fis %}
                             <div class="p-6 border-b border-white/10 last:border-b-0">
                                 <!-- Sous-catégorie -->
-                                <div class="flex items-center justify-between mb-4 p-4 bg-white/5 rounded-2xl">
+                                <div class="flex items-center justify-between mb-4 p-4 bg-dark-700/80 rounded-2xl border border-white/10">
                                     <div class="flex items-center">
                                         <div class="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center mr-3">
                                             <i class="fas fa-folder text-purple-400 text-sm"></i>
@@ -284,7 +284,7 @@
                                 <!-- Documents -->
                                 <div class="space-y-4">
                                     {% for docs in res %}
-                                    <div class="bg-white/5 rounded-2xl p-4 hover:bg-white/10 transition-all duration-300 group document-card border border-white/10 hover:border-white/20 transform hover:-translate-y-1">
+                                    <div class="bg-dark-700/60 rounded-2xl p-4 hover:bg-dark-700/80 transition-all duration-300 group document-card border border-white/20 hover:border-primary-400/50 transform hover:-translate-y-1 shadow-lg">
                                         <div class="flex items-start justify-between">
                                             <div class="flex-1">
                                                 <div class="flex items-center mb-2">
@@ -350,7 +350,7 @@
 
                     {% if affaires and aff %}
                     <!-- Catégorie Affaires -->
-                    <div class="bg-white/10 backdrop-blur-sm rounded-3xl overflow-hidden border border-white/20 transition-all duration-300 hover:border-yellow-500/50 category-card">
+                    <div class="bg-dark-800/95 backdrop-blur-md rounded-3xl overflow-hidden border border-white/30 transition-all duration-300 hover:border-yellow-500/70 category-card shadow-xl">
                         <div class="bg-yellow-600/30 p-6 border-l-4 border-yellow-400">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
@@ -372,7 +372,7 @@
                             {% for key, res in aff %}
                             <div class="p-6 border-b border-white/10 last:border-b-0">
                                 <!-- Sous-catégorie -->
-                                <div class="flex items-center justify-between mb-4 p-4 bg-white/5 rounded-2xl">
+                                <div class="flex items-center justify-between mb-4 p-4 bg-dark-700/80 rounded-2xl border border-white/10">
                                     <div class="flex items-center">
                                         <div class="w-8 h-8 bg-yellow-500/20 rounded-full flex items-center justify-center mr-3">
                                             <i class="fas fa-folder text-yellow-400 text-sm"></i>
@@ -387,7 +387,7 @@
                                 <!-- Documents -->
                                 <div class="space-y-4">
                                     {% for docs in res %}
-                                    <div class="bg-white/5 rounded-2xl p-4 hover:bg-white/10 transition-all duration-300 group document-card border border-white/10 hover:border-white/20 transform hover:-translate-y-1">
+                                    <div class="bg-dark-700/60 rounded-2xl p-4 hover:bg-dark-700/80 transition-all duration-300 group document-card border border-white/20 hover:border-primary-400/50 transform hover:-translate-y-1 shadow-lg">
                                         <div class="flex items-start justify-between">
                                             <div class="flex-1">
                                                 <div class="flex items-center mb-2">
