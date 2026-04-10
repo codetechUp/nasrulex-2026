@@ -185,14 +185,13 @@
     <!-- Header Animé -->
     <header class="fixed top-0 left-0 right-0 z-40 glass-effect border-b border-white/20">
         <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
+            <div class="flex justify-between items-center py-3 sm:py-4 gap-3">
                 <!-- Logo avec Animation -->
-                <a href="/" class="flex items-center group">
+                <a href="/" class="flex items-center">
                     <div class="relative">
-                        <img src="{{asset('assets/img/Nasurlex-logo.png')}}" alt="Nasrulex" class="h-10 w-10 transition-transform group-hover:scale-110">
-                        <div class="absolute inset-0 bg-primary-500 rounded-full opacity-0 group-hover:opacity-20 animate-pulse"></div>
+                        <img src="{{asset('assets/img/Nasurlex-logo.png')}}" alt="Nasrulex" class="h-9 w-9 sm:h-10 sm:w-10">
                     </div>
-                    <span class="ml-3 text-xl font-black text-white group-hover:text-primary-300 transition-colors">
+                    <span class="ml-2 sm:ml-3 text-lg sm:text-xl font-black text-white">
                         
                     </span>
                 </a>
@@ -224,7 +223,7 @@
                 </nav>
                 
                 <!-- User Actions -->
-                <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-2 sm:space-x-4">
                     {% if app.user %}
                         {% if app.user.role == "ROLE_USER" %}
                             <a href="{{path('profil')}}" class="hidden md:flex items-center px-4 py-2 text-gray-300 hover:text-primary-300 font-medium transition-colors group">
@@ -238,7 +237,7 @@
                                 Dashboard
                             </a>
                         {% endif %}
-                        <a href="{{path('logout')}}" class="flex items-center px-4 py-2 text-gray-300 hover:text-accent-300 font-medium transition-colors group">
+                        <a href="{{path('logout')}}" class="hidden md:flex items-center px-4 py-2 text-gray-300 hover:text-accent-300 font-medium transition-colors group">
                             <i class="fas fa-sign-out-alt mr-2 group-hover:scale-110 transition-transform"></i>
                             <span class="hidden md:inline">Déconnexion</span>
                         </a>
@@ -251,13 +250,13 @@
                             <i class="fas fa-sign-in-alt mr-2 group-hover:scale-110 transition-transform"></i>
                             Connexion
                         </a>
-                        <a href="{{path('inscription')}}" class="bg-gradient-to-r from-primary-500 to-accent-500 text-white px-6 py-2 rounded-full font-semibold hover:from-primary-600 hover:to-accent-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                        <a href="{{path('inscription')}}" class="hidden sm:inline-flex bg-gradient-to-r from-primary-500 to-accent-500 text-white px-6 py-2 rounded-full font-semibold hover:from-primary-600 hover:to-accent-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                             S'inscrire
                         </a>
                     {% endif %}
                     
                     <!-- Mobile Menu Button -->
-                    <button id="mobile-menu-button" class="lg:hidden text-gray-300 p-2 hover:bg-white/10 rounded-lg transition-colors">
+                    <button id="mobile-menu-button" aria-label="Ouvrir le menu" aria-expanded="false" class="lg:hidden inline-flex items-center justify-center text-gray-300 p-2.5 hover:bg-white/10 rounded-xl transition-colors border border-white/10">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
                 </div>
@@ -265,17 +264,21 @@
         </div>
         
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="lg:hidden hidden glass-effect border-t border-white/20 py-4 shadow-xl">
-            <div class="container mx-auto px-4 space-y-2">
-                <a href="/" class="block py-3 px-4 text-gray-300 hover:bg-primary-500/20 hover:text-primary-300 rounded-lg transition-colors font-medium">
+        <div id="mobile-menu" class="lg:hidden hidden border-t border-white/20 bg-dark-900/95 backdrop-blur-xl shadow-2xl">
+            <div class="container mx-auto px-4 py-4 space-y-3 max-h-[calc(100vh-72px)] overflow-y-auto">
+                <a href="/" class="block py-3 px-4 text-gray-200 bg-white/5 hover:bg-primary-500/20 hover:text-primary-300 rounded-xl transition-colors font-medium">
                     Accueil
                 </a>
+                
                 {% for cat in categories %}
-                <div class="py-2 px-4">
-                    <div class="text-white font-semibold mb-2">{{ cat.libelle }}</div>
-                    <div class="pl-4 space-y-1">
+                <div class="px-4 py-3 rounded-2xl bg-white/5 border border-white/10">
+                    <div class="text-white font-semibold mb-3 flex items-center justify-between">
+                        <span>{{ cat.libelle }}</span>
+                        <span class="text-xs text-gray-400">{{ cat.sousCategorie|length }} rubriques</span>
+                    </div>
+                    <div class="pl-3 space-y-1 border-l border-white/10">
                         {% for sousCat in cat.sousCategorie %}
-                        <a href="#" class="block py-2 text-gray-300 hover:text-primary-300 transition-colors">
+                        <a href="#" class="block py-2 text-sm text-gray-300 hover:text-primary-300 transition-colors leading-relaxed">
                             {{ sousCat.libelle }}
                         </a>
                         {% endfor %}
@@ -283,13 +286,38 @@
                 </div>
                 {% endfor %}
                 
-                {% if not app.user %}
-                <div class="pt-4 border-t border-white/20">
-                    <a href="{{path('login')}}" class="block py-3 px-4 text-gray-300 hover:bg-primary-500/20 hover:text-primary-300 rounded-lg transition-colors font-medium">
-                        Connexion
-                    </a>
+                <div class="pt-3 border-t border-white/10 space-y-2">
+                    {% if app.user %}
+                        {% if app.user.role == "ROLE_USER" %}
+                            <a href="{{path('profil')}}" class="flex items-center py-3 px-4 text-gray-200 bg-white/5 hover:bg-primary-500/20 hover:text-primary-300 rounded-xl transition-colors font-medium">
+                                <i class="fas fa-user-circle mr-3"></i>
+                                Mon Compte
+                            </a>
+                        {% endif %}
+                        {% if app.user.role == "ROLE_ADMIN" %}
+                            <a href="{{path('dashbord')}}" class="flex items-center py-3 px-4 text-gray-200 bg-white/5 hover:bg-primary-500/20 hover:text-primary-300 rounded-xl transition-colors font-medium">
+                                <i class="fas fa-tachometer-alt mr-3"></i>
+                                Dashboard
+                            </a>
+                        {% endif %}
+                        <a href="{{path('logout')}}" class="flex items-center py-3 px-4 text-gray-200 bg-white/5 hover:bg-accent-500/20 hover:text-accent-300 rounded-xl transition-colors font-medium">
+                            <i class="fas fa-sign-out-alt mr-3"></i>
+                            Déconnexion
+                        </a>
+                    {% else %}
+                        <a href="{{path('tarif')}}" class="flex items-center py-3 px-4 text-gray-200 bg-white/5 hover:bg-primary-500/20 hover:text-primary-300 rounded-xl transition-colors font-medium">
+                            <i class="fas fa-crown mr-3"></i>
+                            Voir les tarifs
+                        </a>
+                        <a href="{{path('login')}}" class="flex items-center py-3 px-4 text-gray-200 bg-white/5 hover:bg-primary-500/20 hover:text-primary-300 rounded-xl transition-colors font-medium">
+                            <i class="fas fa-sign-in-alt mr-3"></i>
+                            Connexion
+                        </a>
+                        <a href="{{path('inscription')}}" class="flex items-center justify-center py-3 px-4 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-xl font-semibold shadow-lg">
+                            S'inscrire
+                        </a>
+                    {% endif %}
                 </div>
-                {% endif %}
             </div>
         </div>
     </header>
@@ -427,12 +455,28 @@
         });
 
         // Mobile Menu
-        document.getElementById('mobile-menu-button').addEventListener('click', function() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-            this.querySelector('i').classList.toggle('fa-bars');
-            this.querySelector('i').classList.toggle('fa-times');
-        });
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', function() {
+                const isHidden = mobileMenu.classList.contains('hidden');
+                mobileMenu.classList.toggle('hidden');
+                this.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+                this.querySelector('i').classList.toggle('fa-bars');
+                this.querySelector('i').classList.toggle('fa-times');
+            });
+
+            mobileMenu.querySelectorAll('a').forEach((link) => {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenuButton.setAttribute('aria-expanded', 'false');
+                    const icon = mobileMenuButton.querySelector('i');
+                    icon.classList.add('fa-bars');
+                    icon.classList.remove('fa-times');
+                });
+            });
+        }
 
         // Back to Top
         const backToTop = document.getElementById('back-to-top');

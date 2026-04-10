@@ -1,7 +1,150 @@
-{% extends 'base.html.twig' %} {% block body %}
-<div class="container m-5 p-4 ">
-    <h1>Réinitialisation du mot de passe</h1>
-    <p>Veuillez entrer votre addresse email ci-dessous.</p>
-    {{ form(form) }}
-</div>
+{% extends 'base.html.twig' %}
+
+{% block title %}Réinitialisation du mot de passe - Nasrulex{% endblock %}
+
+{% block body %}
+<!-- Page de réinitialisation du mot de passe -->
+<section class="min-h-screen relative flex items-center justify-center py-10 sm:py-14 lg:py-20 overflow-hidden">
+    <!-- Background Animations -->
+    <div class="absolute inset-0">
+        <div class="absolute top-1/4 left-1/4 w-56 h-56 sm:w-72 sm:h-72 lg:w-96 lg:h-96 bg-primary-500 rounded-full opacity-20 blur-3xl animate-float"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-52 h-52 sm:w-64 sm:h-64 lg:w-80 lg:h-80 bg-accent-500 rounded-full opacity-30 blur-3xl animate-float" style="animation-delay: 2s;"></div>
+    </div>
+
+    <div class="container mx-auto px-4 sm:px-6 relative z-10">
+        <div class="max-w-md mx-auto w-full">
+            <!-- En-tête -->
+            <div class="text-center mb-6 sm:mb-8" data-aos="fade-down">
+                <div class="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-primary-500/20 rounded-2xl sm:rounded-3xl mb-4 sm:mb-6">
+                    <i class="fas fa-key text-primary-400 text-2xl sm:text-3xl"></i>
+                </div>
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-3 sm:mb-4 leading-tight">
+                    Mot de passe oublié ?
+                </h1>
+                <p class="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed px-1 sm:px-0">
+                    Pas de problème ! Entrez votre adresse email et nous vous enverrons un lien de réinitialisation.
+                </p>
+            </div>
+
+            <!-- Formulaire -->
+            <div class="bg-dark-800/95 backdrop-blur-md rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 border border-white/30 shadow-2xl" data-aos="fade-up" data-aos-delay="200">
+                {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+                
+                <!-- Messages Flash -->
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="p-3 sm:p-4 rounded-2xl border {% if label == 'success' %}bg-green-500/20 border-green-500/50 text-green-300{% elseif label == 'danger' %}bg-red-500/20 border-red-500/50 text-red-300{% else %}bg-blue-500/20 border-blue-500/50 text-blue-300{% endif %} animate-fade-in">
+                            <div class="flex items-start sm:items-center">
+                                <i class="fas {% if label == 'success' %}fa-check-circle{% elseif label == 'danger' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %} mr-3 mt-0.5 sm:mt-0"></i>
+                                <span class="font-semibold">{{ message }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+
+                <!-- Champ Email -->
+                <div>
+                    <label for="{{ form.Email.vars.id }}" class="block text-white font-semibold mb-3 text-base sm:text-lg">
+                        <i class="fas fa-envelope mr-2 text-primary-400"></i>
+                        Adresse email
+                    </label>
+                    <div class="relative">
+                        <i class="fas fa-at absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm sm:text-base"></i>
+                        {{ form_widget(form.Email, {
+                            'attr': {
+                                'class': 'w-full min-h-[52px] pl-11 sm:pl-12 pr-4 py-3 sm:py-4 bg-dark-700 border border-white/30 rounded-2xl text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 text-base sm:text-lg',
+                                'placeholder': 'votre.email@exemple.com'
+                            }
+                        }) }}
+                    </div>
+                    {{ form_errors(form.Email) }}
+                </div>
+
+                <!-- Bouton Submit -->
+                <div class="pt-2 sm:pt-4">
+                    {{ form_widget(form.Envoyer, {
+                        'attr': {
+                            'class': 'w-full min-h-[52px] bg-gradient-to-r from-primary-500 to-accent-500 text-white py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg hover:from-primary-600 hover:to-accent-600 transition-all duration-300 transform hover:scale-[1.02] sm:hover:scale-105 shadow-lg hover:shadow-xl group'
+                        },
+                        'label': false
+                    }) }}
+                    <button type="submit" class="hidden"></button>
+                </div>
+
+                {{ form_end(form) }}
+
+                <!-- Lien de retour -->
+                <div class="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-white/20 text-center">
+                    <a href="{{ path('login') }}" class="inline-flex items-center text-primary-300 hover:text-primary-200 font-semibold transition-colors group">
+                        <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
+                        Retour à la connexion
+                    </a>
+                </div>
+            </div>
+
+            <!-- Informations supplémentaires -->
+            <div class="mt-6 sm:mt-8 text-center" data-aos="fade-up" data-aos-delay="400">
+                <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/10">
+                    <div class="flex flex-col sm:flex-row items-start text-left gap-4 sm:gap-0">
+                        <div class="flex-shrink-0 w-10 h-10 bg-primary-500/20 rounded-full flex items-center justify-center sm:mr-4 sm:mt-1">
+                            <i class="fas fa-info-circle text-primary-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-semibold mb-2">Comment ça fonctionne ?</h3>
+                            <ul class="text-gray-300 text-sm space-y-2">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-primary-400 mr-2 mt-1"></i>
+                                    <span>Entrez votre adresse email</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-primary-400 mr-2 mt-1"></i>
+                                    <span>Recevez un lien de réinitialisation par email</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-primary-400 mr-2 mt-1"></i>
+                                    <span>Créez un nouveau mot de passe sécurisé</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Besoin d'aide -->
+            <div class="mt-5 sm:mt-6 text-center px-2 sm:px-0">
+                <p class="text-gray-400 text-sm sm:text-base leading-relaxed">
+                    Vous n'avez pas de compte ?
+                    <a href="{{ path('inscription') }}" class="text-primary-400 hover:text-primary-300 font-semibold transition-colors">
+                        Inscrivez-vous gratuitement
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Style pour les champs de formulaire Symfony */
+    .form-error {
+        color: #f87171;
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+        display: block;
+    }
+    
+    input:invalid:not(:placeholder-shown) {
+        border-color: rgba(239, 68, 68, 0.5);
+        animation: shake 0.5s;
+    }
+
+    @media (max-width: 640px) {
+        .container {
+            max-width: 100%;
+        }
+
+        input[type="email"] {
+            font-size: 16px;
+        }
+    }
+</style>
 {% endblock %}
